@@ -1,12 +1,13 @@
 import folium  # sert à générer une carte interactive (basée sur Leaflet.js)
 import json
 
-from PySide6.QtWidgets import QApplication, QMainWindow
+from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QWidget, QVBoxLayout
 
 # Composant Qt qui affiche du contenu web (HTML, CSS, JavaScript) :
 from PySide6.QtWebEngineWidgets import QWebEngineView
 
 
+# --- Fenêtre principale avec carte Folium ---
 class MapWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -17,7 +18,7 @@ class MapWindow(QMainWindow):
         # Création de la carte folium (centrée sur Madrid):
         spain_map = folium.Map(location=[40.0, -3.3], zoom_start=7)
 
-        # Lecture du fichier JSON et ajout des marqueurs
+        # Lecture du fichier JSON (villes + images associées)
         with open("towns.json", encoding="utf-8") as f:
             towns = json.load(f)
 
@@ -29,12 +30,12 @@ class MapWindow(QMainWindow):
                 icon=folium.CustomIcon(icon_image="tinto.png", icon_size=(40, 40)),
             ).add_to(spain_map)
 
-        # Rendu HTML en mémoire :
+        # --- Rendu HTML en mémoire ---
         html_data = spain_map.get_root().render()
 
         # Création du widget WebEngineView (navigateur intégré):
         self.browser = QWebEngineView()
-        self.browser.setHtml(html_data)  # Chargement direct du HTML
+        self.browser.setHtml(html_data)
         self.setCentralWidget(self.browser)  # Navigateur comme unique widget central
 
 
