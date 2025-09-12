@@ -26,7 +26,7 @@ class MapWindow(QMainWindow):
                 location=town["coords"],
                 popup=town["popup"],
                 tooltip=town["nom"],
-                icon=folium.Icon(color=town["couleur"], icon="info-sign"),
+                icon=folium.CustomIcon(icon_image="tinto.png", icon_size=(40, 40)),
             ).add_to(spain_map)
 
         # Rendu HTML en mémoire :
