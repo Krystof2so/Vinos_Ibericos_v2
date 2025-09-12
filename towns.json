@@ -1,0 +1,21 @@
+[
+  {
+    "nom": "Madrid",
+    "coords": [40.4168, -3.7038],
+    "popup": "Madrid, capitale de l'Espagne",
+    "couleur": "red"
+  },
+  {
+    "nom": "Zaragoza",
+    "coords": [41.6488, -0.8891],
+    "popup": "Zaragoza, ville historique d'Aragon",
+    "couleur": "blue"
+  },
+  {
+    "nom": "Vigo",
+    "coords": [42.2406, -8.7207],
+    "popup": "Vigo, ville portuaire de Galice",
+    "couleur": "green"
+  }
+]
+
