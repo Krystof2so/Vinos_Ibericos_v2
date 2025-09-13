@@ -1,0 +1,21 @@
+[
+  {
+    "nom": "Somontano",
+    "coords": [42.02, -0.07],
+    "description": "La zone vinicole du Somontano se trouve dans la comarca du même nom, dont le chef-lieu est Barbastro. Zone verte au relief abrupt, la vigne se cultive sur les terrasses des vallées qui versent au Nord de la dépression de l'Èbre.",
+    "img": "somontano.jpg"
+  },
+  {
+    "nom": "Jumilla",
+    "coords": [38.29, -1.20],
+    "description": "La région dans laquelle s'établit la DOP Jumilla constitue un territoire de transition entre la plaine de la Mancha et les doux terroirs méditerranéens du Levante.",
+    "img": "jumilla.jpg"
+  },
+  {
+    "nom": "Ribera del Duero",
+    "coords": [41.4154, -3.5536],
+    "description": "Son vignoble, dans la zone du Haute Vallée du Douro, Duero en espagnol, regroupe de nombreuses communes des provinces de Burgos, Valladolid, Soria et Ségovie avec une longue tradition de production de vins",
+    "img": "ribera_del_duero.jpg"
+  }
+]
+
