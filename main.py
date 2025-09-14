@@ -88,18 +88,24 @@ class MainWindow(QMainWindow):
         layout.addWidget(button_frame, stretch=1)
 
 
-if __name__ == "__main__":
+def load_datas() -> dict:
+    """Chargement des données"""
+    with open("vinedos.json", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def main() -> None:
     app = QApplication(sys.argv)
 
-    # Charger les données
-    with open("vinedos.json", encoding="utf-8") as f:
-        vinedos = json.load(f)
-
     image_win = ImageWindow()
-    main_win = MainWindow(vinedos)
+    main_win = MainWindow(load_datas())
 
     # Connexion : clic bouton → ouvrir image
     main_win.vinedo_selected.connect(image_win.show_image)
 
     main_win.show()
     sys.exit(app.exec())
+
+
+if __name__ == "__main__":
+    main()
