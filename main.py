@@ -24,6 +24,9 @@ class MainWindow(QMainWindow):
     def __init__(self, vinedos):
         super().__init__()
         self.setWindowTitle("Vinos Ibericos")
+        self.selected_button = None  # bouton actuellement sélectionné
+        self.vinedos = vinedos
+        self.marker_coords = {v["nom"]: v["coords"] for v in vinedos}
 
         # --- Widget central ---
         central_widget = QWidget()
@@ -33,18 +36,7 @@ class MainWindow(QMainWindow):
         # --- Partie carte (QWebEngineView) ---
         self.browser = QWebEngineView()
         main_layout.addWidget(self.browser, stretch=3)  # plus large pour la carte
-
-        # Générer la carte Folium
-        spain_map = folium.Map(location=[40.0, -3.3], zoom_start=7)
-        for vinedo in vinedos:
-            folium.Marker(
-                location=vinedo["coords"],
-                tooltip=vinedo["nom"],
-                popup=vinedo["description"],
-                icon=folium.CustomIcon(icon_image="tinto.png", icon_size=(40, 40)),
-            ).add_to(spain_map)
-        html_data = spain_map.get_root().render()
-        self.browser.setHtml(html_data)
+        self.update_map()  # Affiche la carte initiale
 
         # --- Partie boutons + cadre image ---
         right_frame = QFrame()
@@ -55,33 +47,110 @@ class MainWindow(QMainWindow):
         right_layout.addLayout(grid_buttons_layout)
 
         # Zone pour l'image (label en bas)
-        self.image_label = QLabel("Aucune image sélectionnée")
+        self.image_label = QLabel()
         self.image_label.setAlignment(Qt.AlignCenter)
         self.image_label.setFixedSize(400, 300)
         right_layout.addWidget(
             self.image_label, alignment=Qt.AlignHCenter | Qt.AlignVCenter
         )
 
+        # Bouton Réinitialiser la carte
+        reset_btn = QPushButton("Recentrer la carte sur l'Espagne")
+        reset_btn.setFixedHeight(40)
+        reset_btn.clicked.connect(self.reset_interface)
+        right_layout.addWidget(reset_btn)
+
         # Ajout des boutons dans la grille (tri alphabétique)
         vinedos_sorted = sorted(vinedos, key=itemgetter("nom"))
-        cols, btn_height = 3, 50  # nombre de colonnes
+        cols, btn_height = 4, 60  # nombre de colonnes
         for i, vinedo in enumerate(vinedos_sorted):
             row = i // cols
             col = i % cols
-            btn = QPushButton(self.split_text(vinedo["nom"], max_chars=10))
+            btn = QPushButton(self.split_text(vinedo["nom"], max_chars=11))
             btn.setFixedHeight(btn_height)
             img_path = os.path.join("assets", "img", vinedo["img"])
-            btn.clicked.connect(partial(self.show_image, img_path, vinedo["nom"]))
+            btn.clicked.connect(
+                partial(self.on_button_clicked, btn, img_path, vinedo["nom"])
+            )
             grid_buttons_layout.addWidget(btn, row, col)
 
         main_layout.addWidget(right_frame, stretch=1)
 
     # --- Méthodes auxiliaires ---
-    def split_text(self, text, max_chars=10):
+    def split_text(self, text, max_chars):
         """Découpe le texte sur deux lignes si trop long"""
         if len(text) <= max_chars:
             return text
         return text[:max_chars] + "\n" + text[max_chars:]
+
+    def on_button_clicked(self, btn, image_path, title):
+        """Gère la sélection du bouton et l'affichage de l'image"""
+        # Réinitialiser l’ancien bouton
+        if self.selected_button is not None:
+            self.selected_button.setStyleSheet("")  # style par défaut
+        # Appliquer le style lie-de-vin au bouton cliqué
+        btn.setStyleSheet(
+            """
+                QPushButton {
+                    background-color: #f8d7da;       /* fond rose clair */
+                    border: 4px solid #800020;       /* bordure lie-de-vin */
+                    border-radius: 8px;              /* coins arrondis */
+                    padding: 6px;
+                    font-weight: bold;               /* texte en gras */
+                    color: #4a0e1f;                  /* prune foncé pour le texte */
+                }
+                QPushButton:hover {
+                    background-color: #f1bfc2;       /* rose un peu plus vif au survol */
+                }
+            """
+        )
+        self.selected_button = btn
+        # Afficher l’image
+        self.show_image(image_path, title)
+
+        # Recentrer la carte sur le vignoble
+        coords = self.marker_coords[title]
+        self.update_map(center=coords)
+
+    def update_map(self, center=None):
+        """Regénère la carte avec tous les marqueurs, centrée sur 'center'"""
+        spain_map = folium.Map(
+            location=center or [40.0, -3.3], zoom_start=10 if center else 7
+        )
+        for v in self.vinedos:
+            tooltip_html = f"""
+                <span style='
+                    font-size:18px;
+                    font-weight:bold;
+                    color:purple;
+                    background-color:lightgrey;
+                    padding:2px 4px;
+                    border-radius:3px;
+                '>{v["nom"]}</span>
+            """
+            popup_html = f"""
+                <div style='
+                    font-size:16px;
+                    line-height:1.4;
+                    color:#333333;
+                    background-color:#f0f0f0;
+                    padding:8px;
+                    border-radius:6px;
+                    width:400px;
+                '>
+                    <strong style="font-size:20px; color:red;">{v["nom"]}</strong><br>
+                    {v["description"]}
+                </div>
+            """
+            folium.Marker(
+                location=v["coords"],
+                tooltip=tooltip_html,
+                popup=popup_html,
+                icon=folium.CustomIcon(icon_image="tinto.png", icon_size=(40, 40)),
+            ).add_to(spain_map)
+
+        html_data = spain_map.get_root().render()
+        self.browser.setHtml(html_data)
 
     def show_image(self, image_path, title):
         """Affiche l'image sous les boutons"""
@@ -91,6 +160,15 @@ class MainWindow(QMainWindow):
             self.image_label.setToolTip(title)
         else:
             self.image_label.setText("Image introuvable")
+
+    def reset_interface(self):
+        """Réinitialise la carte, l'image et le bouton sélectionné"""
+        self.update_map()
+        self.image_label.setText("Aucune image sélectionnée")
+        self.image_label.setPixmap(QPixmap())
+        if self.selected_button:
+            self.selected_button.setStyleSheet("")
+            self.selected_button = None
 
 
 # --- Fonctions utilitaires ---

@@ -1,21 +1,51 @@
 [
   {
     "nom": "Somontano",
-    "coords": [42.02, -0.07],
+    "coords": [42.03611, 0.12639],
     "description": "La zone vinicole du Somontano se trouve dans la comarca du même nom, dont le chef-lieu est Barbastro. Zone verte au relief abrupt, la vigne se cultive sur les terrasses des vallées qui versent au Nord de la dépression de l'Èbre.",
     "img": "somontano.jpg"
   },
   {
     "nom": "Jumilla",
-    "coords": [38.29, -1.20],
+    "coords": [38.4760, -1.3220],
     "description": "La région dans laquelle s'établit la DOP Jumilla constitue un territoire de transition entre la plaine de la Mancha et les doux terroirs méditerranéens du Levante.",
     "img": "jumilla.jpg"
   },
   {
     "nom": "Ribera del Duero",
-    "coords": [41.4154, -3.5536],
+    "coords": [41.6971, -3.9280],
     "description": "Son vignoble, dans la zone du Haute Vallée du Douro, Duero en espagnol, regroupe de nombreuses communes des provinces de Burgos, Valladolid, Soria et Ségovie avec une longue tradition de production de vins",
     "img": "ribera_del_duero.jpg"
+  },
+  {
+    "nom": "Cariñena",
+    "coords": [41.333, -1.217],
+    "description": "C'est l'AOC doyenne de la communauté autonome d'Aragon, et l'une des plus anciennes d'Espagne.",
+    "img": "carinena.jpg"
+  },
+  {
+    "nom": "Alella",
+    "coords": [41.495, 2.296],
+    "description": "Le vignoble est situé sur un sol sableux d'origine granitique. Il bénéficie d'un climat méditerranéen sur la côte, plus continental à l'intérieur des terres.",
+    "img": "alella.jpg"
+  },
+  {
+    "nom": "Rias Baixas",
+    "coords": [42.4336191, -8.6480530],
+    "description": "Dans cette région d'Espagne cohabitent les deux types de viticulture. Elles sont pourtant diversifiées dans l'espace. Les vignobles aux ceps taillés courts se trouvent uniquement à l'intérieur des terres tandis que les vignes menées en hautain se situent le long des côtes. Ce mode de conduite est appelé parrales.",
+    "img": "rias_baixas.jpg"
+  },
+  {
+    "nom": "Navarra",
+    "coords": [42.4806, -1.6511],
+    "description": "Sa zone de production se situe dans le sud de la Navarre.",
+    "img": "navarra.jpg"
+  },
+  {
+    "nom": "Vinos de\t\t Madrid",
+    "coords": [40.4168, -3.7038],
+    "description": "Il est confirmé que l'existence des premiers domaines viticoles dans les frontières actuelles de Madrid remonte au XIIIe siècle, mais l'existence de vigne et du vin dans la région remonte à bien plus longtemps.",
+    "img": "vinos_de_madrid.jpg"
   }
 ]
 
