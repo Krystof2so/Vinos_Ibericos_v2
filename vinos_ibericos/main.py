@@ -16,9 +16,8 @@ from PySide6.QtWidgets import (
 from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QPixmap
-import folium
 
-from map_manager import MapManager
+from .map_manager import MapManager
 
 
 # --- Fenêtre principale ---
@@ -116,43 +115,8 @@ class MainWindow(QMainWindow):
         self.update_map(center=coords)
 
     def update_map(self, center=None):
-        """Regénère la carte avec tous les marqueurs, centrée sur 'center' et ouvre popup du vignoble"""
-        spain_map = folium.Map(
-            location=center or [40.0, -3.3], zoom_start=10 if center else 7
-        )
-        for v in self.vinedos:
-            tooltip_html = f"""
-                <span style='
-                    font-size:18px;
-                    font-weight:bold;
-                    color:purple;
-                    background-color:lightgrey;
-                    padding:2px 4px;
-                    border-radius:3px;
-                '>{v["nom"]}</span>
-            """
-            popup_html = f"""
-                <div style='
-                    font-size:16px;
-                    line-height:1.4;
-                    color:#333333;
-                    background-color:#f0f0f0;
-                    padding:8px;
-                    border-radius:6px;
-                    width:400px;
-                '>
-                    <strong style="font-size:20px; color:red;">{v["nom"]}</strong><br>
-                    {v["description"]}
-                </div>
-            """
-            folium.Marker(
-                location=v["coords"],
-                tooltip=tooltip_html,
-                popup=popup_html,
-                icon=folium.CustomIcon(icon_image="tinto.png", icon_size=(40, 40)),
-            ).add_to(spain_map)
-
-        html_data = spain_map.get_root().render()
+        """Regénère la carte avec tous les marqueurs, centrée sur 'center'"""
+        html_data = self.map_manager.generate_map_html(center=center)
         self.browser.setHtml(html_data)
 
     def show_image(self, image_path, title):
