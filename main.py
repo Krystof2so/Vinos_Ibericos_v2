@@ -107,13 +107,12 @@ class MainWindow(QMainWindow):
         self.selected_button = btn
         # Afficher l’image
         self.show_image(image_path, title)
-
-        # Recentrer la carte sur le vignoble
+        # Carte : regénérer centrée sur le vignoble
         coords = self.marker_coords[title]
         self.update_map(center=coords)
 
     def update_map(self, center=None):
-        """Regénère la carte avec tous les marqueurs, centrée sur 'center'"""
+        """Regénère la carte avec tous les marqueurs, centrée sur 'center' et ouvre popup du vignoble"""
         spain_map = folium.Map(
             location=center or [40.0, -3.3], zoom_start=10 if center else 7
         )
@@ -164,7 +163,6 @@ class MainWindow(QMainWindow):
     def reset_interface(self):
         """Réinitialise la carte, l'image et le bouton sélectionné"""
         self.update_map()
-        self.image_label.setText("Aucune image sélectionnée")
         self.image_label.setPixmap(QPixmap())
         if self.selected_button:
             self.selected_button.setStyleSheet("")
