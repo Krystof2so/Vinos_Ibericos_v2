@@ -1,27 +1,17 @@
 from functools import partial
-import json
 from operator import itemgetter
+import json
 import os
-from PySide6.QtWidgets import (
-    QApplication,
-    QFrame,
-    QGridLayout,
-    QHBoxLayout,
-    QLabel,
-    QMainWindow,
-    QPushButton,
-    QVBoxLayout,
-    QWidget,
-)
-from PySide6.QtWebEngineWidgets import QWebEngineView
-from PySide6.QtCore import Qt
-from PySide6.QtGui import QPixmap
 
-from .map_manager import MapManager
+from PySide6 import QtWidgets, QtCore, QtGui
+from PySide6.QtWebEngineWidgets import QWebEngineView
+
+from vinos_ibericos.map_manager import MapManager
+from vinos_ibericos.vinedo_button import VinedoButton
 
 
 # --- Fenêtre principale ---
-class MainWindow(QMainWindow):
+class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, vinedos):
         super().__init__()
         self.setWindowTitle("Vinos Ibericos")
@@ -31,9 +21,9 @@ class MainWindow(QMainWindow):
         self.map_manager = MapManager(vinedos)
 
         # --- Widget central ---
-        central_widget = QWidget()
+        central_widget = QtWidgets.QWidget()
         self.setCentralWidget(central_widget)
-        main_layout = QHBoxLayout(central_widget)
+        main_layout = QtWidgets.QHBoxLayout(central_widget)
 
         # --- Partie carte (QWebEngineView) ---
         self.browser = QWebEngineView()
@@ -41,77 +31,62 @@ class MainWindow(QMainWindow):
         self.update_map()  # Affiche la carte initiale
 
         # --- Partie boutons + cadre image ---
-        right_frame = QFrame()
-        right_layout = QVBoxLayout(right_frame)
+        right_frame = QtWidgets.QFrame()
+        right_layout = QtWidgets.QVBoxLayout(right_frame)
 
         # Grille pour les boutons
-        grid_buttons_layout = QGridLayout()
+        grid_buttons_layout = QtWidgets.QGridLayout()
         right_layout.addLayout(grid_buttons_layout)
 
         # Zone pour l'image (label en bas)
-        self.image_label = QLabel()
-        self.image_label.setAlignment(Qt.AlignCenter)  # type: ignore
+        self.image_label = QtWidgets.QLabel()
+        self.image_label.setAlignment(QtCore.Qt.AlignCenter)  # type: ignore
         self.image_label.setFixedSize(400, 300)
         right_layout.addWidget(
             self.image_label,
-            alignment=Qt.AlignHCenter | Qt.AlignVCenter,  # type: ignore
+            alignment=QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter,  # type: ignore
         )
 
         # Bouton Réinitialiser la carte
-        reset_btn = QPushButton("Recentrer la carte sur l'Espagne")
+        reset_btn = QtWidgets.QPushButton("Recentrer la carte sur l'Espagne")
         reset_btn.setFixedHeight(40)
         reset_btn.clicked.connect(self.reset_interface)
         right_layout.addWidget(reset_btn)
 
         # Ajout des boutons dans la grille (tri alphabétique)
         vinedos_sorted = sorted(vinedos, key=itemgetter("nom"))
-        cols, btn_height = 4, 60  # nombre de colonnes
+        cols = 4  # nombre de colonnes
         for i, vinedo in enumerate(vinedos_sorted):
             row = i // cols
             col = i % cols
-            btn = QPushButton(self.split_text(vinedo["nom"], max_chars=11))
-            btn.setFixedHeight(btn_height)
             img_path = os.path.join("assets", "img", vinedo["img"])
-            btn.clicked.connect(
-                partial(self.on_button_clicked, btn, img_path, vinedo["nom"])
-            )
+            btn = VinedoButton(vinedo["nom"], img_path)
+            btn.clicked.connect(partial(self.on_button_clicked, btn))
             grid_buttons_layout.addWidget(btn, row, col)
 
         main_layout.addWidget(right_frame, stretch=1)
 
     # --- Méthodes auxiliaires ---
-    def split_text(self, text, max_chars):
-        """Découpe le texte sur deux lignes si trop long"""
-        if len(text) <= max_chars:
-            return text
-        return text[:max_chars] + "\n" + text[max_chars:]
-
-    def on_button_clicked(self, btn, image_path, title):
+    def on_button_clicked(self, btn):
         """Gère la sélection du bouton et l'affichage de l'image"""
-        # Réinitialiser l’ancien bouton
-        if self.selected_button is not None:
-            self.selected_button.setStyleSheet("")  # style par défaut
-        # Appliquer le style lie-de-vin au bouton cliqué
-        btn.setStyleSheet(
-            """
-                QPushButton {
-                    background-color: #f8d7da;       /* fond rose clair */
-                    border: 4px solid #800020;       /* bordure lie-de-vin */
-                    border-radius: 8px;              /* coins arrondis */
-                    padding: 6px;
-                    font-weight: bold;               /* texte en gras */
-                    color: #4a0e1f;                  /* prune foncé pour le texte */
-                }
-                QPushButton:hover {
-                    background-color: #f1bfc2;       /* rose un peu plus vif au survol */
-                }
-            """
-        )
+        # Désélectionner le bouton précédent
+        if self.selected_button:
+            self.selected_button.deselect()
+
+        # Sélectionner le bouton cliqué
+        btn.select()
         self.selected_button = btn
+
         # Afficher l’image
-        self.show_image(image_path, title)
-        # Carte : regénérer centrée sur le vignoble
-        coords = self.marker_coords[title]
+        pixmap = btn.get_pixmap()
+        if pixmap:
+            self.image_label.setPixmap(pixmap)
+            self.image_label.setToolTip(btn.name)
+        else:
+            self.image_label.setText("Image introuvable")
+
+        # Centrer la carte sur ce vignoble
+        coords = self.marker_coords[btn.name]
         self.update_map(center=coords)
 
     def update_map(self, center=None):
@@ -119,21 +94,16 @@ class MainWindow(QMainWindow):
         html_data = self.map_manager.generate_map_html(center=center)
         self.browser.setHtml(html_data)
 
-    def show_image(self, image_path, title):
-        """Affiche l'image sous les boutons"""
-        pixmap = QPixmap(image_path)
-        if not pixmap.isNull():
-            self.image_label.setPixmap(pixmap.scaled(380, 280, Qt.KeepAspectRatio))  # type: ignore
-            self.image_label.setToolTip(title)
-        else:
-            self.image_label.setText("Image introuvable")
-
     def reset_interface(self):
         """Réinitialise la carte, l'image et le bouton sélectionné"""
+        # Réinitialiser la carte
         self.update_map()
-        self.image_label.setPixmap(QPixmap())
+        # Réinitialiser l'image
+        self.image_label.setPixmap(QtGui.QPixmap())
+        self.image_label.setToolTip("")
+        # Réinitialiser le bouton sélectionné
         if self.selected_button:
-            self.selected_button.setStyleSheet("")
+            self.selected_button.deselect()
             self.selected_button = None
 
 
@@ -145,7 +115,7 @@ def load_datas() -> dict:
 
 
 def main() -> None:
-    app = QApplication([])
+    app = QtWidgets.QApplication([])
     main_win = MainWindow(load_datas())
     main_win.showMaximized()  # Plein écran avec barre de titre
     app.exec()

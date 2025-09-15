@@ -2,27 +2,24 @@ from pathlib import Path
 import folium
 
 
-ASSETS_DIR = Path(__file__).resolve().parent.parent / "assets"
-
-
 class MapManager:
-    def __init__(self, vinedos, default_center=[40.0, -3.3], default_zoom=7):
+    def __init__(self, vinedos):
         self.vinedos = vinedos
-        self.default_center = default_center
-        self.default_zoom = default_zoom
-        self.icon_path = ASSETS_DIR / "tinto.png"
+        self.icon_path = Path(__file__).parent.parent / "assets" / "tinto.png"
 
-    def generate_map_html(self, center=None, zoom=None):
+    def generate_map_html(self, center=None):
         """Génère le HTML de la carte avec tous les marqueurs"""
-        center = center or self.default_center
-        zoom = zoom or (10 if center != self.default_center else self.default_zoom)
-        spain_map = folium.Map(location=center, zoom_start=zoom)
+        zoom = 10 if center else 7
+        spain_map = folium.Map(location=center or [40.0, -3.3], zoom_start=zoom)
 
         for v in self.vinedos:
+            auto_open = center == v["coords"]
             folium.Marker(
                 location=v["coords"],
                 tooltip=self._format_tooltip(v["nom"]),
-                popup=self._format_popup(v),
+                popup=folium.Popup(
+                    self._format_popup(v), max_width=400, show=auto_open
+                ),
                 icon=folium.CustomIcon(
                     icon_image=str(self.icon_path), icon_size=(40, 40)
                 ),
