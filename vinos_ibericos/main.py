@@ -40,12 +40,17 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setCentralWidget(central_widget)
         main_layout = QtWidgets.QHBoxLayout(central_widget)
         # Partie carte :
-        self.browser = QWebEngineView()
-        main_layout.addWidget(self.browser, stretch=3)  # plus large pour la carte
-        self.update_map()  # Affiche la carte initiale
+        map_view = self._setup_map_view()
+        main_layout.addWidget(map_view, stretch=3)  # plus large pour la carte
         # Partie panneau droit :
         right_frame = self._setup_right_panel(vinedos)
         main_layout.addWidget(right_frame, stretch=1)
+
+    def _setup_map_view(self) -> QWebEngineView:
+        """Construit et initialise la vue de la carte"""
+        self.browser = QWebEngineView()
+        self.update_map()
+        return self.browser
 
     def _setup_right_panel(self, vinedos: List[Dict[str, Any]]) -> QtWidgets.QFrame:
         """Construit le panneau droit avec boutons, image et reset"""
