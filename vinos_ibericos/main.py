@@ -95,11 +95,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def reset_interface(self):
         """Réinitialise la carte, l'image et le bouton sélectionné"""
-        # Réinitialiser la carte
-        self.update_map()
-        # Réinitialiser l'image
-        self.image_label.setPixmap(QtGui.QPixmap())
-        self.image_label.setToolTip("")
+        self.update_map()  # Réinitialiser la carte
+        self.image_label.clear()  # Vider l'image
         # Réinitialiser le bouton sélectionné
         if self.selected_button:
             self.selected_button.deselect()
