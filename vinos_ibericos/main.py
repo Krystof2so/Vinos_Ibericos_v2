@@ -1,5 +1,7 @@
+from dataclasses import dataclass
 from functools import partial
 from operator import itemgetter
+from pathlib import Path
 import json
 import os
 
@@ -8,6 +10,15 @@ from PySide6.QtWebEngineWidgets import QWebEngineView
 
 from vinos_ibericos.map_manager import MapManager
 from vinos_ibericos.vinedo_button import VinedoButton
+
+
+@dataclass(frozen=True)
+class Config:
+    BASE_DIR: Path = Path(__file__).resolve().parent.parent
+    JSON_FILE_PATH: Path = BASE_DIR / "vinedos.json"
+    JSON_FILE: str = JSON_FILE_PATH.name
+    JSON_DECODE_ERROR: str = "Erreur JSON:"
+    NOT_FOUND_ERROR: str = f"Fichier {JSON_FILE} introuvable"
 
 
 # --- Fenêtre principale ---
@@ -106,8 +117,15 @@ class MainWindow(QtWidgets.QMainWindow):
 # --- Fonctions utilitaires ---
 def load_datas() -> dict:
     """Chargement des données depuis JSON"""
-    with open("vinedos.json", encoding="utf-8") as f:
-        return json.load(f)
+    try:
+        with open(Config.JSON_FILE, encoding="utf-8") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        print(Config.NOT_FOUND_ERROR)
+        return {}
+    except json.JSONDecodeError as e:
+        print(Config.JSON_DECODE_ERROR, e)
+        return {}
 
 
 def main() -> None:
