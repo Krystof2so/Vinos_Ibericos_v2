@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from functools import partial
 from operator import itemgetter
 from pathlib import Path
+from typing import Any, Dict, List, Optional
 import json
 import os
 
@@ -23,13 +24,17 @@ class Config:
 
 # --- Fenêtre principale ---
 class MainWindow(QtWidgets.QMainWindow):
-    def __init__(self, vinedos):
+    def __init__(self, vinedos: List[Dict[str, Any]]) -> None:
         super().__init__()
         self.setWindowTitle("Vinos Ibericos")
-        self.selected_button = None  # bouton actuellement sélectionné
-        self.vinedos = vinedos
-        self.marker_coords = {v["nom"]: v["coords"] for v in vinedos}
-        self.map_manager = MapManager(vinedos)
+        self.selected_button: Optional[VinedoButton] = (
+            None  # bouton actuellement sélectionné
+        )
+        self.vinedos: list[Dict[str, Any]] = vinedos
+        self.marker_coords: dict[str, list[float]] = {
+            v["nom"]: v["coords"] for v in vinedos
+        }
+        self.map_manager: MapManager = MapManager(vinedos)
 
         # --- Widget central ---
         central_widget = QtWidgets.QWidget()
@@ -78,7 +83,7 @@ class MainWindow(QtWidgets.QMainWindow):
         main_layout.addWidget(right_frame, stretch=1)
 
     # --- Méthodes auxiliaires ---
-    def on_button_clicked(self, btn):
+    def on_button_clicked(self, btn: VinedoButton) -> None:
         """Gère la sélection du bouton et l'affichage de l'image"""
         # Désélectionner le bouton précédent
         if self.selected_button:
@@ -99,12 +104,12 @@ class MainWindow(QtWidgets.QMainWindow):
         # Centrer la carte sur ce vignoble
         self.update_map(vinedo_filter=btn.name)
 
-    def update_map(self, vinedo_filter=None):
+    def update_map(self, vinedo_filter: Optional[str] = None) -> None:
         """Regénère la carte avec tous les marqueurs, centrée sur 'center'"""
         html_data = self.map_manager.generate_map_html(vinedo_filter=vinedo_filter)
         self.browser.setHtml(html_data)
 
-    def reset_interface(self):
+    def reset_interface(self) -> None:
         """Réinitialise la carte, l'image et le bouton sélectionné"""
         self.update_map()  # Réinitialiser la carte
         self.image_label.clear()  # Vider l'image
@@ -115,22 +120,25 @@ class MainWindow(QtWidgets.QMainWindow):
 
 
 # --- Fonctions utilitaires ---
-def load_datas() -> dict:
+def load_datas() -> list[dict[str, Any]]:
     """Chargement des données depuis JSON"""
     try:
         with open(Config.JSON_FILE, encoding="utf-8") as f:
-            return json.load(f)
+            data = json.load(f)
+            if isinstance(data, list):
+                return data
+            return []
     except FileNotFoundError:
         print(Config.NOT_FOUND_ERROR)
-        return {}
+        return []
     except json.JSONDecodeError as e:
         print(Config.JSON_DECODE_ERROR, e)
-        return {}
+        return []
 
 
 def main() -> None:
     app = QtWidgets.QApplication([])
-    main_win = MainWindow(load_datas())
+    main_win: MainWindow = MainWindow(load_datas())
     main_win.showMaximized()  # Plein écran avec barre de titre
     app.exec()
 

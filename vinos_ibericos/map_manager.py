@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional, TypedDict
+from typing import Dict, Any, Optional, TypedDict
 
 import folium
 
@@ -27,8 +27,8 @@ class Vinedo(TypedDict):
 
 
 class MapManager:
-    def __init__(self, vinedos: list[Vinedo]) -> None:
-        self.vinedos: list[Vinedo] = vinedos
+    def __init__(self, vinedos: list[dict[str, Any]]) -> None:
+        self.vinedos: list[dict[str, Any]] = vinedos
 
     def generate_map_html(self, vinedo_filter: Optional[str] = None) -> str:
         """
@@ -89,7 +89,7 @@ class MapManager:
             '>{name}</span>
         """
 
-    def _format_popup(self, vinedo: Vinedo) -> str:
+    def _format_popup(self, vinedo: Dict[str, Any]) -> str:
         return f"""
             <div style='
                 font-size:16px;
