@@ -21,8 +21,9 @@ class Config:
     NOT_FOUND_ERROR: str = f"Fichier {JSON_FILE_PATH.name} introuvable"
 
 
-# --- Fenêtre principale ---
 class MainWindow(QtWidgets.QMainWindow):
+    """Construction de l'interface."""
+
     def __init__(self, vinedos: List[Dict[str, Any]]) -> None:
         super().__init__()
         self.setWindowTitle("Vinos Ibericos")
@@ -34,26 +35,26 @@ class MainWindow(QtWidgets.QMainWindow):
             v["nom"]: v["coords"] for v in vinedos
         }
         self.map_manager: MapManager = MapManager(vinedos)
-
-        # --- Widget central ---
+        #  Widget central :
         central_widget = QtWidgets.QWidget()
         self.setCentralWidget(central_widget)
         main_layout = QtWidgets.QHBoxLayout(central_widget)
-
-        # --- Partie carte ---
+        # Partie carte :
         self.browser = QWebEngineView()
         main_layout.addWidget(self.browser, stretch=3)  # plus large pour la carte
         self.update_map()  # Affiche la carte initiale
+        # Partie panneau droit :
+        right_frame = self._setup_right_panel(vinedos)
+        main_layout.addWidget(right_frame, stretch=1)
 
-        # --- Partie boutons + cadre image ---
+    def _setup_right_panel(self, vinedos: List[Dict[str, Any]]) -> QtWidgets.QFrame:
+        """Construit le panneau droit avec boutons, image et reset"""
         right_frame = QtWidgets.QFrame()
         right_layout = QtWidgets.QVBoxLayout(right_frame)
-
-        # Grille pour les boutons
+        # Grille pour les boutons :
         grid_buttons_layout = QtWidgets.QGridLayout()
         right_layout.addLayout(grid_buttons_layout)
-
-        # Zone pour l'image (label en bas)
+        # Zone pour l'image :
         self.image_label = QtWidgets.QLabel()
         self.image_label.setAlignment(QtCore.Qt.AlignCenter)  # type: ignore
         self.image_label.setFixedSize(400, 300)
@@ -61,16 +62,14 @@ class MainWindow(QtWidgets.QMainWindow):
             self.image_label,
             alignment=QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter,  # type: ignore
         )
-
-        # Bouton Réinitialiser la carte
+        # Bouton pour réinitialiser la carte :
         reset_btn = QtWidgets.QPushButton("Recentrer la carte sur l'Espagne")
         reset_btn.setFixedHeight(40)
         reset_btn.clicked.connect(self.reset_interface)
         right_layout.addWidget(reset_btn)
-
-        # Ajout des boutons dans la grille (tri alphabétique)
+        # Ajout des boutons (tri alphabétique) :
         vinedos_sorted = sorted(vinedos, key=itemgetter("nom"))
-        cols = 4  # nombre de colonnes
+        cols = 4
         for i, vinedo in enumerate(vinedos_sorted):
             row = i // cols
             col = i % cols
@@ -78,10 +77,8 @@ class MainWindow(QtWidgets.QMainWindow):
             btn = VinedoButton(vinedo["nom"], img_path)
             btn.clicked.connect(partial(self.on_button_clicked, btn))
             grid_buttons_layout.addWidget(btn, row, col)
+        return right_frame
 
-        main_layout.addWidget(right_frame, stretch=1)
-
-    # --- Méthodes auxiliaires ---
     def on_button_clicked(self, btn: VinedoButton) -> None:
         """Gère la sélection du bouton et l'affichage de l'image"""
         # Désélectionner le bouton précédent
