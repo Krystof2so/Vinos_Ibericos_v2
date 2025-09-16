@@ -17,9 +17,8 @@ from vinos_ibericos.vinedo_button import VinedoButton
 class Config:
     BASE_DIR: Path = Path(__file__).resolve().parent.parent
     JSON_FILE_PATH: Path = BASE_DIR / "vinedos.json"
-    JSON_FILE: str = JSON_FILE_PATH.name
     JSON_DECODE_ERROR: str = "Erreur JSON:"
-    NOT_FOUND_ERROR: str = f"Fichier {JSON_FILE} introuvable"
+    NOT_FOUND_ERROR: str = f"Fichier {JSON_FILE_PATH.name} introuvable"
 
 
 # --- Fenêtre principale ---
@@ -123,7 +122,7 @@ class MainWindow(QtWidgets.QMainWindow):
 def load_datas() -> list[dict[str, Any]]:
     """Chargement des données depuis JSON"""
     try:
-        with open(Config.JSON_FILE, encoding="utf-8") as f:
+        with open(Config.JSON_FILE_PATH, encoding="utf-8") as f:
             data = json.load(f)
             if isinstance(data, list):
                 return data
