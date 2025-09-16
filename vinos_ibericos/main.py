@@ -25,7 +25,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setCentralWidget(central_widget)
         main_layout = QtWidgets.QHBoxLayout(central_widget)
 
-        # --- Partie carte (QWebEngineView) ---
+        # --- Partie carte ---
         self.browser = QWebEngineView()
         main_layout.addWidget(self.browser, stretch=3)  # plus large pour la carte
         self.update_map()  # Affiche la carte initiale
@@ -86,12 +86,11 @@ class MainWindow(QtWidgets.QMainWindow):
             self.image_label.setText("Image introuvable")
 
         # Centrer la carte sur ce vignoble
-        coords = self.marker_coords[btn.name]
-        self.update_map(center=coords)
+        self.update_map(vinedo_filter=btn.name)
 
-    def update_map(self, center=None):
+    def update_map(self, vinedo_filter=None):
         """Regénère la carte avec tous les marqueurs, centrée sur 'center'"""
-        html_data = self.map_manager.generate_map_html(center=center)
+        html_data = self.map_manager.generate_map_html(vinedo_filter=vinedo_filter)
         self.browser.setHtml(html_data)
 
     def reset_interface(self):

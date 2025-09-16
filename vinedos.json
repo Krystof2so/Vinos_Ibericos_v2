@@ -46,6 +46,30 @@
     "coords": [40.4168, -3.7038],
     "description": "Il est confirmé que l'existence des premiers domaines viticoles dans les frontières actuelles de Madrid remonte au XIIIe siècle, mais l'existence de vigne et du vin dans la région remonte à bien plus longtemps.",
     "img": "vinos_de_madrid.jpg"
+  },
+  {
+    "nom": "Condado de Huelva",
+    "coords": [37.38605, -6.55231],
+    "description": "Le début de la viticulture dans cette zone remonte au XIVe siècle, bien que des légendes lui prêtent une existence beaucoup plus ancienne, par un commerce entre Grecs et la civilisation de Tartessos. Le vignoble actuel remonte donc aux plantations effectuées après la reconquête de cette région sur les royaumes musulmans.",
+    "img": "condado_de_huelva.jpeg"
+  },
+  {
+    "nom": "Calatayud",
+    "coords": [41.35353, -1.64318],
+    "description": "La première référence écrite sur les vins de Calatayud date du Ier siècle.",
+    "img": "calatayud.jpg"
+  },
+  {
+    "nom": "Cangas",
+    "coords": [43.17605, -6.54909],
+    "description": "La tradition du vin y remonte à l'époque romaine. Plus tard, les moines bénédictins ont continué au XIe siècle. Du travail associé à la vigne, une partie de la population a vécu jusqu'à la fin du 19ème siècle.",
+    "img": "cangas.jpg"
+  },
+  {
+    "nom": "Almansa",
+    "coords": [38.9384, -1.8613],
+    "description": "La viticulture dans la région d'Almansa remonte probablement au XVIe siècle, période durant laquelle la production de vin s'est installée de manière continue. Située à environ 700 mètres d'altitude, Almansa est la région viticole la plus orientale de Castille-La Manche, bénéficiant d'un climat méditerranéen continentalisé favorable à la culture de la vigne.",
+    "img": "almansa.jpg"
   }
 ]
 

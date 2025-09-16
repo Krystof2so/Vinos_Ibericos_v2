@@ -34,9 +34,11 @@ class VinedoButton(QPushButton):
 
     def _split_text(self, text: str, max_chars: int = 11) -> str:
         """Découpe le texte si trop long"""
-        if len(text) <= max_chars:
-            return text
-        return text[:max_chars] + "\n" + text[max_chars:]
+        return (
+            text
+            if len(text) <= max_chars
+            else f"{text[:max_chars]}\n{text[max_chars:]}"
+        )
 
     def select(self):
         """Met le bouton en mode sélectionné"""
