@@ -5,7 +5,7 @@ from pathlib import Path
 import json
 import os
 
-from PySide6 import QtWidgets, QtCore, QtGui
+from PySide6 import QtWidgets, QtCore
 from PySide6.QtWebEngineWidgets import QWebEngineView
 
 from vinos_ibericos.map_manager import MapManager
