@@ -70,6 +70,30 @@
     "coords": [38.9384, -1.8613],
     "description": "La viticulture dans la région d'Almansa remonte probablement au XVIe siècle, période durant laquelle la production de vin s'est installée de manière continue. Située à environ 700 mètres d'altitude, Almansa est la région viticole la plus orientale de Castille-La Manche, bénéficiant d'un climat méditerranéen continentalisé favorable à la culture de la vigne.",
     "img": "almansa.jpg"
+  },
+  {
+    "nom": "Arlanza",
+    "coords": [42.02639, -3.75889],
+    "description": "La viticulture dans la région de l'Arlanza remonte au moins au XIIe siècle, lorsque le monastère de Santa María de Bujedo de Juarros acquit des vignobles situés le long des rivières Arlanza et Duero. La région a été officiellement reconnue comme Denominación de Origen Protegida (DOP) en 2007, consolidant ainsi son identité viticole.",
+    "img": "arlanza.jpg"
+  },
+  {
+    "nom": "Empordà",
+    "coords": [42.2676, 2.9580],
+    "description": "La tradition viticole dans la région de l’Empordà remonte à plus de deux millénaires, avec des preuves de culture de la vigne datant de l’époque romaine. L’Empordà a obtenu le statut de Denominació d’Origen Protegida (DOP) en 1972. Aujourd’hui, la région est réputée pour ses vins expressifs, élaborés à partir de cépages traditionnels tels que la Garnatxa et la Carinyena, ainsi que pour ses pratiques viticoles durables.",
+    "img": "emporda.jpg"
+  },
+  {
+    "nom": "Ribera del Guadiana",
+    "coords": [38.9411, -6.3706],
+    "description": "La tradition viticole dans la région remonte à l'époque romaine, avec une continuité jusqu'à nos jours. Cependant, jusqu'à la fin du XXe siècle, la viticulture en Estrémadure était principalement orientée vers la production de raisins de table et de vin destiné à la distillation. Ce n'est qu'à partir de 1999 que la région a été officiellement reconnue pour la qualité de ses vins. Aujourd'hui, la Ribera del Guadiana est l'une des principales zones viticoles d'Espagne, produisant une large gamme de vins rouges, blancs et rosés, ainsi que des cavas.",
+    "img": "ribera_del_guadiana.jpg"
+  },
+  {
+    "nom": "Monterrei",
+    "coords": [41.9633, -7.4492],
+    "description": "La viticulture dans la région de Monterrei remonte à plus de 2 000 ans, avec des traces de culture de la vigne datant de l'époque romaine. Au IXe siècle, les ordres monastiques ont joué un rôle clé dans l'expansion de la viticulture en Galice, notamment dans la vallée de Monterrei. Au Moyen Âge, les vins de Monterrei étaient réputés pour leur qualité et étaient exportés vers les colonies espagnoles en Amérique, notamment sous le règne de Philippe II. Aujourd'hui, la région produit principalement des vins blancs à partir des cépages Godello, Doña Blanca et Treixadura, ainsi que des rouges à base de Mencía et Merenzao. Les vignobles sont situés à des altitudes variant entre 400 et 450 mètres, bénéficiant d'un climat relativement sec et chaud, avec des influences atlantiques atténuées par la chaîne montagneuse de la Serra do Larouco",
+    "img": "monterrei.jpg"
   }
 ]
 
