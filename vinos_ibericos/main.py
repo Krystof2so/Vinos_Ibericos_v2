@@ -131,10 +131,11 @@ class MainWindow(QtWidgets.QMainWindow):
         """Réinitialise la carte, l'image et le bouton sélectionné"""
         self.update_map()  # Réinitialiser la carte
         self.image_label.clear()  # Vider l'image
-        # Réinitialiser le bouton sélectionné
-        if self.selected_button:
-            self.selected_button.deselect()
-            self.selected_button = None
+        # récupère le bouton coché et le décoche (cela déclenchera toggled(False))
+        checked_btn = self.btn_group.checkedButton()
+        if checked_btn:
+            checked_btn.setChecked(False)
+            checked_btn.setStyleSheet(VinedoButton.DEFAULT_STYLE)
 
 
 # --- Fonctions utilitaires ---

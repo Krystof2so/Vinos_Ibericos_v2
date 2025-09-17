@@ -18,31 +18,36 @@ class Config:
 class VinedoButton(QPushButton):
     """
     Bouton représentant un vignoble.
-    - Qt gère l'état coché/décoché (via QButtonGroup).
-    - Le style utilise l'état ':checked' pour afficher le style sélectionné.
+    - est 'checkable' (toggle)
+    - applique explicitement le style quand il est togglé via toggled(bool)
     """
 
-    STYLE: str = """
-        /* style par défaut */
+    # style par défaut (non coché)
+    DEFAULT_STYLE: str = """
         QPushButton {
             background-color: none;
             border: 1px solid grey;
             border-radius: 6px;
             padding: 6px;
         }
-        /* style lorsque le bouton est coché (sélectionné) */
-        QPushButton:checked {
+        QPushButton:hover {
+            background-color: #f1bfc2;
+            font-weight: bold;
+            color: #6b5556;
+        }
+    """
+
+    # style sélectionné (coché)
+    SELECTED_STYLE: str = """
+        QPushButton {
             background-color: #f8d7da;
             border: 4px solid #800020;
             border-radius: 8px;
             font-weight: bold;
             color: #4a0e1f;
         }
-        /* style au survol (hover) - s'applique aussi si coché */
         QPushButton:hover {
             background-color: #f1bfc2;
-            font-weight: bold;
-            color: #6b5556;
         }
     """
 
@@ -54,12 +59,12 @@ class VinedoButton(QPushButton):
         )  # Texte potentiellement coupé sur deux lignes
         self.name: str = name
         self.image_path: str = image_path
-        # Rendre le bouton checkable (gestion d'exclusivité via 'QButtonGroup.setExclusive(True)') :
+        # Toggleable + style initial
         self.setCheckable(True)
-        self.setStyleSheet(self.STYLE)  # Applique le style
-        self.setFixedHeight(
-            Config.BTN_FIXED_H
-        )  # Taille fixe du Bouton (cohérence pour l'UI)
+        self.setStyleSheet(self.DEFAULT_STYLE)
+        self.setFixedHeight(Config.BTN_FIXED_H)
+        # Connexion au signal toggled pour appliquer le style en direct
+        self.toggled.connect(self._on_toggled)
 
     def _split_text(self, text: str, max_chars: int = Config.BTN_MAX_CHARS) -> str:
         """Découpe le texte si trop long"""
@@ -68,6 +73,16 @@ class VinedoButton(QPushButton):
             if len(text) <= max_chars
             else f"{text[:max_chars]}\n{text[max_chars:]}"
         )
+
+    def _on_toggled(self, checked: bool) -> None:
+        """
+        Slot appelé quand l'état checked change.
+        On applique le style correspondant pour forcer la mise à jour visuelle.
+        """
+        if checked:
+            self.setStyleSheet(self.SELECTED_STYLE)
+        else:
+            self.setStyleSheet(self.DEFAULT_STYLE)
 
     def get_pixmap(self, size: Tuple[int, int] = Config.IMG_SIZE) -> Optional[QPixmap]:
         """Retourne l'image du vignoble sous forme de QPixmap redimensionné"""
