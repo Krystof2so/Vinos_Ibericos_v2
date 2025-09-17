@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Optional, Tuple
 
 from PySide6.QtWidgets import QPushButton
@@ -13,6 +14,9 @@ class Config:
     IMG_SIZE: tuple[int, int] = (380, 280)
     SCALED_PIXMAP_W: int = 0
     SCALED_PIXMAP_H: int = 1
+    DEFAULT_IMG_PATH: Path = (
+        Path(__file__).resolve().parent.parent / "assets" / "img" / "default_img.jpg"
+    )
 
 
 class VinedoButton(QPushButton):
@@ -85,10 +89,13 @@ class VinedoButton(QPushButton):
             self.setStyleSheet(self.DEFAULT_STYLE)
 
     def get_pixmap(self, size: Tuple[int, int] = Config.IMG_SIZE) -> Optional[QPixmap]:
-        """Retourne l'image du vignoble sous forme de QPixmap redimensionné"""
+        """
+        Retourne l'image du vignoble sous forme de QPixmap redimensionné.
+        Si l'image n'existe pas, retourne l'image par défaut.
+        """
         pixmap: QPixmap = QPixmap(self.image_path)
         if pixmap.isNull():
-            return None
+            pixmap = QPixmap(str(Config.DEFAULT_IMG_PATH))  # Image par défaut
         return pixmap.scaled(
             size[Config.SCALED_PIXMAP_W],  # largeur
             size[Config.SCALED_PIXMAP_H],  # hauteur
