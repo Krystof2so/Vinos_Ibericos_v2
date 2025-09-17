@@ -37,48 +37,52 @@ class MapManager:
         - vinedo_filter=None => vue globale avec tous les marqueurs
         - vinedo_filter="Nom du vignoble" => vue détaillée avec uniquement ce vignoble
         """
-        return (
-            self._generate_detailed_map(vinedo_filter)
-            if vinedo_filter
-            else self._generate_global_map()
-        )
+        if vinedo_filter:
+            v = next((x for x in self.vinedos if x["nom"] == vinedo_filter), None)
+            if not v:
+                return self._generate_map(self.vinedos)  # fallback global
+            return self._generate_map([v], focus=True)
+        else:
+            return self._generate_map(self.vinedos)
 
-    def _generate_global_map(self) -> str:
+    def _generate_map(self, vinedos: list[dict[str, Any]], focus: bool = False) -> str:
         """
-        Carte avec tous les vignobles.
-        Figurent seulement les icônes et les tooltips.
+        Crée une carte folium avec un ou plusieurs vignobles.
+        - focus=True => zoom + popup
         """
-        spain_map = folium.Map(
-            location=MapConfig.CENTRE_OF_SPAIN, zoom_start=MapConfig.INIT_ZOOM
+        center, zoom = (
+            (vinedos[0]["coords"], MapConfig.FOCUS_ZOOM)
+            if focus and vinedos
+            else (MapConfig.CENTRE_OF_SPAIN, MapConfig.INIT_ZOOM)
         )
-        for v in self.vinedos:  # Boucle sur tous les vignobles
-            folium.Marker(
-                location=v["coords"],
-                tooltip=self._format_tooltip(v["nom"]),
-                icon=folium.CustomIcon(
-                    str(IconConfig.WINE_ICON), icon_size=IconConfig.INIT_SIZE
-                ),
-            ).add_to(spain_map)
+        spain_map = folium.Map(location=center, zoom_start=zoom)
+        for v in vinedos:
+            self._add_marker(spain_map, v, focus)
         return spain_map.get_root().render()
 
-    def _generate_detailed_map(self, vinedo_name: str) -> str:
-        """Carte centrée sur un seul vignoble"""
-        # On récupère les infos du vignoble demandé :
-        v = next((x for x in self.vinedos if x["nom"] == vinedo_name), None)
-        if not v:
-            return self._generate_global_map()  # fallback si erreur (carte générale)
-        spain_map = folium.Map(location=v["coords"], zoom_start=MapConfig.FOCUS_ZOOM)
+    def _add_marker(
+        self, fmap: folium.Map, vinedo: dict[str, Any], focus: bool
+    ) -> None:
+        """
+        Ajoute un marqueur pour un vignoble donné.
+        - focus=True => plus gros icône + popup
+        """
+        # Définitions des paramètres du marqueur selon le focus :
+        icon_size = IconConfig.FOCUS_SIZE if focus else IconConfig.INIT_SIZE
+        popup = (
+            folium.Popup(
+                self._format_popup(vinedo), max_width=MapConfig.WIDTH_POPUP, show=True
+            )
+            if focus
+            else None
+        )
+        # Définition du marquer et ajout à la carte folium :
         folium.Marker(
-            location=v["coords"],
-            tooltip=self._format_tooltip(v["nom"]),
-            popup=folium.Popup(
-                self._format_popup(v), max_width=MapConfig.WIDTH_POPUP, show=True
-            ),
-            icon=folium.CustomIcon(
-                str(IconConfig.WINE_ICON), icon_size=IconConfig.FOCUS_SIZE
-            ),
-        ).add_to(spain_map)
-        return spain_map.get_root().render()
+            location=vinedo["coords"],
+            tooltip=self._format_tooltip(vinedo["nom"]),
+            popup=popup,
+            icon=folium.CustomIcon(str(IconConfig.WINE_ICON), icon_size=icon_size),
+        ).add_to(fmap)
 
     def _format_tooltip(self, name: str) -> str:
         return f"""
