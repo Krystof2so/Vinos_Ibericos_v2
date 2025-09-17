@@ -2,7 +2,7 @@
 
 (projet en construction, avec diverses idées, mais pour l'heure je continue mon exploration de [folium](https://python-visualization.github.io/folium/latest/index.html))
 
-![Capture d'écran](assets/img/capture.png)
+![Capture d'écran](capture.png)
 
 ## 🇪🇸 Description
 
