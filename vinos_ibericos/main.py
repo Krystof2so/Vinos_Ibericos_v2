@@ -3,7 +3,6 @@ from operator import itemgetter
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 import json
-import os
 
 from PySide6 import QtWidgets, QtCore
 from PySide6.QtWebEngineWidgets import QWebEngineView
@@ -14,10 +13,21 @@ from vinos_ibericos.vinedo_button import VinedoButton
 
 @dataclass(frozen=True)
 class Config:
+    # load_datas() :
     BASE_DIR: Path = Path(__file__).resolve().parent.parent
     JSON_FILE_PATH: Path = BASE_DIR / "vinedos.json"
     JSON_DECODE_ERROR: str = "Erreur JSON:"
     NOT_FOUND_ERROR: str = f"Fichier {JSON_FILE_PATH.name} introuvable"
+    # MainWindow :
+    STRETCH_MAP_VIEW: int = 3
+    STRETCH_RIGHT_PANEL: int = 1
+    IMG_LABEL_SIZE: tuple[int, int] = (400, 300)
+    FIXED_H_RESET_BTN: int = 40
+    NBRE_COL_BTN: int = 4
+    IMG_DIR_PATH: Path = BASE_DIR / "assets" / "img"
+    # Strings :
+    RESET_BUTTON: str = "Recentrer la carte sur l'Espagne"
+    NOT_IMG: str = "Image introuvable"
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -45,11 +55,13 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # Partie carte :
         map_view = self._setup_map_view()
-        main_layout.addWidget(map_view, stretch=3)  # plus large pour la carte
+        main_layout.addWidget(
+            map_view, stretch=Config.STRETCH_MAP_VIEW
+        )  # plus large pour la carte
 
         # Partie panneau droit (ajout des boutons au groupe):
         right_frame = self._setup_right_panel(vinedos)
-        main_layout.addWidget(right_frame, stretch=1)
+        main_layout.addWidget(right_frame, stretch=Config.STRETCH_RIGHT_PANEL)
 
     def _setup_map_view(self) -> QWebEngineView:
         """Construit et initialise la vue de la carte"""
@@ -67,24 +79,23 @@ class MainWindow(QtWidgets.QMainWindow):
         # Zone pour l'image :
         self.image_label = QtWidgets.QLabel()
         self.image_label.setAlignment(QtCore.Qt.AlignCenter)  # type: ignore
-        self.image_label.setFixedSize(400, 300)
+        self.image_label.setFixedSize(*Config.IMG_LABEL_SIZE)
         right_layout.addWidget(
             self.image_label,
             alignment=QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter,  # type: ignore
         )
         # Bouton pour réinitialiser la carte :
-        reset_btn = QtWidgets.QPushButton("Recentrer la carte sur l'Espagne")
-        reset_btn.setFixedHeight(40)
+        reset_btn = QtWidgets.QPushButton(Config.RESET_BUTTON)
+        reset_btn.setFixedHeight(Config.FIXED_H_RESET_BTN)
         reset_btn.clicked.connect(self.reset_interface)
         right_layout.addWidget(reset_btn)
         # Création des boutons et ajout au 'QButtonGroup' (tri alphabétique) :
-        vinedos_sorted = sorted(vinedos, key=itemgetter("nom"))
-        cols = 4
+        vinedos_sorted: list = sorted(vinedos, key=itemgetter("nom"))
         for i, vinedo in enumerate(vinedos_sorted):
-            row = i // cols
-            col = i % cols
-            img_path = os.path.join("assets", "img", vinedo["img"])
-            btn = VinedoButton(vinedo["nom"], img_path)
+            row: int = i // Config.NBRE_COL_BTN
+            col: int = i % Config.NBRE_COL_BTN
+            img_path: Path = Config.IMG_DIR_PATH / vinedo["img"]
+            btn: QtWidgets.QPushButton = VinedoButton(vinedo["nom"], str(img_path))
             self.btn_group.addButton(btn)  # Ajout du bouton au groupe
             grid_buttons_layout.addWidget(btn, row, col)
         return right_frame
@@ -107,7 +118,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.image_label.setPixmap(pixmap)
             self.image_label.setToolTip(vbtn.name)
         else:
-            self.image_label.setText("Image introuvable")
+            self.image_label.setText(Config.NOT_IMG)
         # Centrer la carte sur le vignoble sélectionné :
         self.update_map(vinedo_filter=vbtn.name)
 
