@@ -10,6 +10,7 @@ class MapConfig:
     CENTRE_OF_SPAIN: tuple[float, float] = (40.0, -3.3)
     INIT_ZOOM: int = 7
     FOCUS_ZOOM: int = 10
+    WIDTH_POPUP: int = 400
 
 
 @dataclass(frozen=True)
@@ -70,7 +71,9 @@ class MapManager:
         folium.Marker(
             location=v["coords"],
             tooltip=self._format_tooltip(v["nom"]),
-            popup=folium.Popup(self._format_popup(v), max_width=400, show=True),
+            popup=folium.Popup(
+                self._format_popup(v), max_width=MapConfig.WIDTH_POPUP, show=True
+            ),
             icon=folium.CustomIcon(
                 str(IconConfig.WINE_ICON), icon_size=IconConfig.FOCUS_SIZE
             ),
