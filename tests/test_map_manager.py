@@ -50,3 +50,20 @@ def test_generate_map_html_with_existing_filter(sample_manager):
     assert isinstance(html_content, str)
     assert "Vinedo Uno" in html_content
     assert "Vinedo Dos" not in html_content  # l'autre ne doit pas apparaître
+
+
+def test_format_tooltip_and_popup_returns_correct_html(sample_manager):
+    """
+    Teste que les méthodes _format_tooltip et _format_popup renvoient bien une chaîne HTML
+    - contenant le nom du vignoble passé en paramètre pour le tooltip,
+    - contenant le nom du vignoble et la description pour le popup.
+    """
+    manager, vineyards = sample_manager
+    html_output_tooltip = manager._format_tooltip(vineyards[0]["nom"])
+    html_output_popup = manager._format_popup(vineyards[1])
+    assert isinstance(html_output_tooltip, str)  # Type string attendu
+    assert "Vinedo Uno" in html_output_tooltip  # Nom du vignoble présent dans le HTML
+    assert isinstance(html_output_popup, str)
+    assert "Vinedo Dos" in html_output_popup
+    assert "Deuxième vignoble test" in html_output_popup
+    print("✅ Tests pour '_format_tooltip' et '_format_popup' réussis")

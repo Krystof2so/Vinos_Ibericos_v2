@@ -76,7 +76,6 @@ class MapManager:
             if focus
             else None
         )
-        # Définition du marquer et ajout à la carte folium :
         folium.Marker(
             location=vinedo["coords"],
             tooltip=self._format_tooltip(vinedo["nom"]),
