@@ -49,6 +49,7 @@ def test_load_datas_returns_list_of_dicts(prepare_json):
         isinstance(item, dict) for item in result
     )  # Chaque élément de la liste = dictionnaire
     assert result == test_values  # Comparaison
+    print("✅ Test 'load_datas' : .json valide.")
 
 
 @pytest.mark.parametrize(
@@ -66,3 +67,4 @@ def test_load_datas_returns_empty_list_on_error(
     result = load_datas()
     assert isinstance(result, list)
     assert result == []
+    print("✅ Test")
