@@ -78,10 +78,11 @@ L’interface est construite avec **PySide6** pour la partie graphique et **Foli
 - Packages Python :
 
 ```bash
-pip install PySide6 folium
+pip install PySide6 folium pytest
 ```
 
-**WebEngine** pour l’affichage de la carte interactive (installé avec PySide6).
+- **WebEngine** pour l’affichage de la carte interactive (installé avec PySide6).
+- Pour lancer les tests : `PYTHONPATH=. pytest -q`.
 
 ---
 
