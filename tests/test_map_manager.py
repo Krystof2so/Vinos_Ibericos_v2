@@ -1,5 +1,6 @@
 # tests/test_map_manager.py
 import pytest
+from folium import Map
 
 from vinos_ibericos.map_manager import MapManager
 
@@ -68,3 +69,24 @@ def test_format_tooltip_and_popup_returns_correct_html(sample_manager):
     assert "Vinedo Dos" in html_output_popup
     assert "Deuxième vignoble test" in html_output_popup
     print("✅ Tests pour '_format_tooltip' et '_format_popup'")
+
+
+def test_add_marker_adds_expected_marker(sample_manager):
+    """
+    Vérifie que _add_marker ajoute bien un marqueur à la carte folium.
+    - On crée une carte vide,
+    - on appelle _add_marker avec un vignoble,
+    - puis on vérifie que les infos sont présentes dans le rendu HTML.
+    """
+    manager, vineyards = sample_manager
+    vinedo = vineyards[0]
+    fmap = Map(location=vinedo["coords"], zoom_start=5)
+    manager._add_marker(fmap, vinedo, focus=True)
+    html_output = fmap.get_root().render()  # Rendu en HTML
+    assert isinstance(html_output, str)
+    assert (
+        vinedo["nom"] in html_output
+    )  # le nom du vignoble doit être dans le tooltip/popup
+    assert str(vinedo["coords"][0]) in html_output  # latitude présente
+    assert str(vinedo["coords"][1]) in html_output  # longitude présente
+    print("✅ Tests pour '_add_marker'")
