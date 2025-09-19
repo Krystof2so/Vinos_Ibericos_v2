@@ -60,10 +60,10 @@
     "img": "calatayud.jpg"
   },
   {
-    "nom": "Cangas",
-    "coords": [43.17605, -6.54909],
-    "description": "La tradition du vin y remonte à l'époque romaine. Plus tard, les moines bénédictins ont continué au XIe siècle. Du travail associé à la vigne, une partie de la population a vécu jusqu'à la fin du 19ème siècle.",
-    "img": "cangas.jpg"
+    "nom": "Catalunya",
+    "coords": [41.1560, 1.1064],
+    "description": "La DO Catalunya (Denominació d'Origen Protegida Catalunya) a été créée en 1999 pour couvrir l’ensemble des zones viticoles traditionnelles de la Catalogne, y compris les vignobles qui n’étaient pas inclus dans d’autres DO plus spécifiques. Elle offre une grande flexibilité : tous les cépages autorisés dans les autres DO catalanes peuvent être utilisés, ce qui permet beaucoup d’expérimentation pour les viticulteurs. Elle couvre une superficie importante : plus de 42 900 hectares de vignobles, répartis dans plusieurs centaines de communes catalanes.",
+    "img": "catalunya.jpg"
   },
   {
     "nom": "Almansa",
@@ -94,6 +94,30 @@
     "coords": [41.9633, -7.4492],
     "description": "La viticulture dans la région de Monterrei remonte à plus de 2 000 ans, avec des traces de culture de la vigne datant de l'époque romaine. Au IXe siècle, les ordres monastiques ont joué un rôle clé dans l'expansion de la viticulture en Galice, notamment dans la vallée de Monterrei. Au Moyen Âge, les vins de Monterrei étaient réputés pour leur qualité et étaient exportés vers les colonies espagnoles en Amérique, notamment sous le règne de Philippe II. Aujourd'hui, la région produit principalement des vins blancs à partir des cépages Godello, Doña Blanca et Treixadura, ainsi que des rouges à base de Mencía et Merenzao. Les vignobles sont situés à des altitudes variant entre 400 et 450 mètres, bénéficiant d'un climat relativement sec et chaud, avec des influences atlantiques atténuées par la chaîne montagneuse de la Serra do Larouco",
     "img": "monterrei.jpg"
+  },
+  {
+    "nom": "Granada",
+    "coords": [37.177336, -3.598557],
+    "description": "La DO Granada, officialisée en 2015, regroupe plusieurs zones viticoles qui jusque-là étaient classées comme « Vino de la Tierra ». Le terroir est très varié : altitude, proximité des montagnes de la Sierra Nevada, influence méditerranéenne et microclimats locaux. Ces conditions contribuent à des vins avec des contrastes thermiques importants jour/nuit, ce qui favorise la complexité aromatique. Historiquement, la viticulture ici remonte à l’époque romaine dans la province, et s’est perpétuée malgré les périodes où les réglementations religieuses limitaient la production.",
+    "img": "granada.jpg"
+  },
+  {
+    "nom": "Campo de\t\t Borja",
+    "coords": [41.8337231, -1.534179],
+    "description": "Le DO Campo de Borja est officiellement reconnu depuis les années 1977-1980. La culture de la vigne dans cette zone remonte à l’époque romaine, mais la première mention écrite concernant des vignes dans cette région date de 1203, dans les archives du monastère cistercien de Veruela. Le cépage emblématique est la Garnacha (Grenache), qui domine largement les plantations (plus de 60 %) dans les zones les plus basses ; d’autres cépages rouges (Tempranillo, Mazuela / Carignan, Cabernet, Syrah) ainsi que des blancs (Macabeo, Chardonnay, etc.) sont également cultivés.",
+    "img": "campo_de_borja.jpg"
+  },
+  {
+    "nom": "La Mancha",
+    "coords": [39.3901, -3.2083],
+    "description": "La Mancha est une Dénomination d’Origine Protégée (DOP) créée en 1932. La viticulture y remonte à l’époque romaine selon les sources, mais les premiers documents écrits attestés datent du XIIᵉ siècle, après la Reconquête. La région a connu une expansion significative dans les années 1940 grâce à la création de nombreuses coopératives. Terroir : climat continental (été très chaud, hiver froid), pluviométrie faible (~300-400 mm/an), sols essentiellement argilo-sablo-calcaires avec tendance plate à faiblement ondulée, altitude autour de ~600-700 mètres.",
+    "img": "la_mancha.jpg"
+  },
+  {
+    "nom": "Arribes",
+    "coords": [41.3187, -6.3979],
+    "description": "La D.O. Arribes a été officiellement reconnue en 2007. Elle se situe sur les bordures du fleuve Duero (Duero en espagnol, Douro en portugais), sur la frontière ouest de l'Espagne avec le Portugal, dans les provinces de Zamora et Salamanca en Castille-et-León. Le paysage est très accidenté : vignobles en terrasses sur des pentes escarpées le long des canyons du Duero, avec des sols granitiques, une topographie qui favorise un microclimat particulier. Les cépages autochtones comme Juan García (rouge), Rufete, les blancs Malvasía, Albillo, etc., jouent un rôle important.",
+    "img": "arribes.jpg"
   }
 ]
 
