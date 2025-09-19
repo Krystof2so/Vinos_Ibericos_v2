@@ -82,7 +82,10 @@ pip install PySide6 folium pytest
 ```
 
 - **WebEngine** pour l’affichage de la carte interactive (installé avec PySide6).
-- Pour lancer les tests : `PYTHONPATH=. pytest -q`.
+- Pour lancer les tests : 
+  - `PYTHONPATH=. pytest -q`: mode silencieux
+  - `PYTHONPATH=. pytest -s`: mode avec affichage des `print()` 
+  - `PYTHONPATH=. pytest -v`: mode verbeux
 
 ---
 
