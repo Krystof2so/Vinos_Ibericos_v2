@@ -157,9 +157,9 @@ class MapManager:
         polygon_coords = [[lat, lon] for lon, lat in raw_coords]
         return folium.Polygon(
             locations=polygon_coords,
-            color="darkred",
+            color="#414f64",
             fill=True,
-            fill_color="salmon",
+            fill_color="#6f8bbe",
             fill_opacity=0.5,
             weight=3,
         ), polygon_coords
