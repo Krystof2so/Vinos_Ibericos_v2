@@ -1,6 +1,5 @@
 # tests/test_map_manager.py
 import json
-from pathlib import Path
 import folium
 import pytest
 from folium import Map
