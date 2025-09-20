@@ -66,6 +66,7 @@ class MapManager:
         """
         Ajoute un marqueur pour un vignoble donné.
         - focus=True => plus gros icône + popup
+        - Ajout d'un polygone représentant la région si coordonnées présentes dans le .json
         """
         # Définitions des paramètres du marqueur selon le focus :
         icon_size = IconConfig.FOCUS_SIZE if focus else IconConfig.INIT_SIZE
@@ -82,6 +83,17 @@ class MapManager:
             popup=popup,
             icon=folium.CustomIcon(str(IconConfig.WINE_ICON), icon_size=icon_size),
         ).add_to(fmap)
+        # Pour le polygone
+        if focus and "polygone" in vinedo:
+            folium.Polygon(
+                locations=vinedo["polygone"],
+                color="darkred",
+                fill=True,
+                fill_color="salmon",
+                fill_opacity=0.5,
+                weight=3,
+            ).add_to(fmap)
+            fmap.fit_bounds(vinedo["polygone"])  # recadrage automatique
 
     def _format_tooltip(self, name: str) -> str:
         return f"""
