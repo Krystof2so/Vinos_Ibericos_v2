@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from json import load
 from pathlib import Path
 from typing import Dict, Any, Optional, TypedDict
 
@@ -17,7 +18,12 @@ class MapConfig:
 class IconConfig:
     INIT_SIZE: tuple[int, int] = (40, 40)
     FOCUS_SIZE: tuple[int, int] = (60, 60)
+
+
+@dataclass(frozen=True)
+class PathConfig:
     WINE_ICON: Path = Path(__file__).parent.parent / "assets" / "tinto.png"
+    GEOJSON_DIR: Path = Path(__file__).parent.parent / "assets" / "geojson"
 
 
 class Vinedo(TypedDict):
@@ -81,19 +87,15 @@ class MapManager:
             location=vinedo["coords"],
             tooltip=self._format_tooltip(vinedo["nom"]),
             popup=popup,
-            icon=folium.CustomIcon(str(IconConfig.WINE_ICON), icon_size=icon_size),
+            icon=folium.CustomIcon(str(PathConfig.WINE_ICON), icon_size=icon_size),
         ).add_to(fmap)
+
         # Pour le polygone
-        if focus and "polygone" in vinedo:
-            folium.Polygon(
-                locations=vinedo["polygone"],
-                color="darkred",
-                fill=True,
-                fill_color="salmon",
-                fill_opacity=0.5,
-                weight=3,
-            ).add_to(fmap)
-            fmap.fit_bounds(vinedo["polygone"])  # recadrage automatique
+        if focus:
+            polygone, coords = self._f_polygone(vinedo["nom"])
+            if polygone:
+                polygone.add_to(fmap)
+                fmap.fit_bounds(coords)  # recadrage automatique
 
     def _format_tooltip(self, name: str) -> str:
         return f"""
@@ -102,7 +104,7 @@ class MapManager:
                 font-weight:bold;
                 color:purple;
                 background-color:lightgrey;
-                padding:2px 4px;
+                padding:2px 4px; 
                 border-radius:3px;
             '>{name}</span>
         """
@@ -122,3 +124,37 @@ class MapManager:
                 {vinedo["description"]}
             </div>
         """
+
+    def _f_polygone(
+        self, name: str
+    ) -> tuple[Optional[folium.Polygon], list[list[float]]]:
+        """
+        Création du polygone permettant de tracer la région viticole sélectionnée.
+        - Extraction des données depuis un fichier .geojson.
+        - Retourne un objet folium.Polygon.
+        """
+        geojson_file: Path = (
+            PathConfig.GEOJSON_DIR / f"{name.lower().replace(' ', '_')}.geojson"
+        )
+        # Charger le fichier GeoJSON s'il existe :
+        try:
+            with open(geojson_file, "r", encoding="utf-8") as f:
+                geojson_data = load(f)
+        except FileNotFoundError:
+            return None, []
+        # Extraire les coordonnées du polygone (si fichier .geojson bien formaté)
+        try:
+            # GeoJSON : geojson_data['features'][0]['geometry']['coordinates'][0]
+            raw_coords = geojson_data["features"][0]["geometry"]["coordinates"][0]
+        except (KeyError, IndexError):
+            return None, []
+        # Inverser chaque coordonnée (lon, lat) -> (lat, lon)
+        polygon_coords = [[lat, lon] for lon, lat in raw_coords]
+        return folium.Polygon(
+            locations=polygon_coords,
+            color="darkred",
+            fill=True,
+            fill_color="salmon",
+            fill_opacity=0.5,
+            weight=3,
+        ), polygon_coords
