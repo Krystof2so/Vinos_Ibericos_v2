@@ -1,4 +1,7 @@
 # tests/test_map_manager.py
+import json
+from pathlib import Path
+import folium
 import pytest
 from folium import Map
 
@@ -90,3 +93,59 @@ def test_add_marker_adds_expected_marker(sample_manager):
     assert str(vinedo["coords"][0]) in html_output  # latitude présente
     assert str(vinedo["coords"][1]) in html_output  # longitude présente
     print("✅ Tests pour '_add_marker'")
+
+
+def test_f_polygone_file_not_found(sample_manager, tmp_path):
+    """Si le fichier GeoJSON est absent → retourne None et liste vide"""
+    manager, _ = sample_manager
+    polygon, coords = manager._f_polygone("non_existant", geojson_dir=tmp_path)
+    assert polygon is None
+    assert coords == []
+
+
+def test_f_polygone_file_malformed(sample_manager, tmp_path):
+    """Si le fichier GeoJSON est mal formé → retourne None et liste vide"""
+    manager, _ = sample_manager
+    bad_geojson_path = tmp_path / "test_vinedo.geojson"
+    bad_geojson_path.write_text("{ invalid json }", encoding="utf-8")
+    polygon, coords = manager._f_polygone("test_vinedo", geojson_dir=tmp_path)
+    assert polygon is None
+    assert coords == []
+
+
+def test_f_polygone_valid_file(sample_manager, tmp_path):
+    """Si le fichier GeoJSON est correct → retourne un Polygon et les coordonnées inversées"""
+    manager, _ = sample_manager
+    good_geojson_path = tmp_path / "test_vinedo.geojson"
+    geojson_data = {
+        "type": "FeatureCollection",
+        "features": [
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [
+                        [
+                            [-3.0, 40.0],
+                            [-3.1, 40.0],
+                            [-3.1, 40.1],
+                            [-3.0, 40.1],
+                            [-3.0, 40.0],
+                        ]
+                    ],
+                },
+            }
+        ],
+    }
+    good_geojson_path.write_text(json.dumps(geojson_data), encoding="utf-8")
+
+    polygon, coords = manager._f_polygone("test_vinedo", geojson_dir=tmp_path)
+    assert isinstance(polygon, folium.Polygon)
+    assert coords == [
+        [40.0, -3.0],
+        [40.0, -3.1],
+        [40.1, -3.1],
+        [40.1, -3.0],
+        [40.0, -3.0],
+    ]
+    print("✅ tests pour '_f_polygone'")

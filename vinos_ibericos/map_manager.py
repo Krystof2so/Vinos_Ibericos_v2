@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from json import load
+from json import load, JSONDecodeError
 from pathlib import Path
 from typing import Dict, Any, List, Optional, Tuple, TypedDict
 
@@ -131,21 +131,21 @@ class MapManager:
         """
 
     def _f_polygone(
-        self, name: str
+        self, name: str, geojson_dir: Path = PathConfig.GEOJSON_DIR
     ) -> Tuple[Optional[folium.Polygon], List[List[float]]]:
         """
         Création du polygone permettant de tracer la région viticole sélectionnée.
         - Extraction des données depuis un fichier .geojson.
         - Retourne un objet folium.Polygon.
         """
-        geojson_file: Path = (
-            PathConfig.GEOJSON_DIR / f"{name.lower().replace(' ', '_')}.geojson"
-        )
+        geojson_file: Path = geojson_dir / f"{name.lower().replace(' ', '_')}.geojson"
         # Charger le fichier GeoJSON s'il existe :
         try:
             with open(geojson_file, "r", encoding="utf-8") as f:
                 geojson_data = load(f)
         except FileNotFoundError:
+            return None, []
+        except JSONDecodeError:
             return None, []
         # Extraire les coordonnées du polygone (si fichier .geojson bien formaté)
         try:
