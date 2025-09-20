@@ -10,7 +10,7 @@
 L’utilisateur peut :
 
 - Visualiser la carte de l’Espagne avec tous les vignobles indiqués.
-- Cliquer sur un vignoble pour afficher une image et des informations détaillées.
+- Cliquer sur un vignoble pour afficher une image et des informations détaillées, ainsi qu'une visualisation précise de la région concernée.
 - Recentrer la carte sur l’Espagne via un bouton de réinitialisation.
 
 L’interface est construite avec [PySide6](https://doc.qt.io/qtforpython-6/index.html) pour la partie graphique et [Folium](https://python-visualization.github.io/folium/latest/index.html) pour la carte interactive.
@@ -21,7 +21,7 @@ L’interface est construite avec [PySide6](https://doc.qt.io/qtforpython-6/inde
 
 1. **Carte interactive**  
    - Vue globale de l’Espagne avec tous les vignobles.
-   - Vue détaillée sur un vignoble avec popup et image.
+   - Vue détaillée sur un vignoble avec popup, image et *overlay* du vignoble sur la carte.
 
 2. **Boutons dynamiques**  
    - Chaque vignoble est représenté par un bouton.
@@ -35,19 +35,6 @@ L’interface est construite avec [PySide6](https://doc.qt.io/qtforpython-6/inde
 4. **Structure modulaire**  
    - Fichiers séparés pour la configuration, les boutons et la gestion de la carte.
    - Feuilles de style et constantes centralisées.
-
----
-
-## 🍇 Description
-
-**Vinos Ibéricos** est une application Python interactive qui permet de découvrir les vignobles espagnols.  
-L’utilisateur peut :
-
-- Visualiser la carte de l’Espagne avec tous les vignobles indiqués.
-- Cliquer sur un vignoble pour afficher une image et des informations détaillées.
-- Recentrer la carte sur l’Espagne via un bouton de réinitialisation.
-
-L’interface est construite avec **PySide6** pour la partie graphique et **Folium** pour la carte interactive.
 
 ---
 
@@ -159,5 +146,3 @@ Cliquer sur le bouton “Recentrer la carte sur l’Espagne” :
 
 - Modifier l’apparence de la carte :
   - Modifier `map_manager.py` (popup, icônes, zoom).
-
-
