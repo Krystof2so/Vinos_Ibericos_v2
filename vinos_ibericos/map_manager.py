@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from json import load
 from pathlib import Path
-from typing import Dict, Any, Optional, TypedDict
+from typing import Dict, Any, List, Optional, Tuple, TypedDict
 
 import folium
 
@@ -36,6 +36,7 @@ class Vinedo(TypedDict):
 class MapManager:
     def __init__(self, vinedos: list[dict[str, Any]]) -> None:
         self.vinedos: list[dict[str, Any]] = vinedos
+        self._current_vinedos: list[dict[str, Any]] = []
 
     def generate_map_html(self, vinedo_filter: Optional[str] = None) -> str:
         """
@@ -44,27 +45,31 @@ class MapManager:
         - vinedo_filter="Nom du vignoble" => vue détaillée avec uniquement ce vignoble
         """
         if vinedo_filter:
-            v = next((x for x in self.vinedos if x["nom"] == vinedo_filter), None)
-            if not v:
-                return self._generate_map(self.vinedos)  # fallback global
-            return self._generate_map([v], focus=True)
+            self._current_vinedos = [
+                v for v in self.vinedos if v["nom"] == vinedo_filter
+            ] or self.vinedos  # fallback global si nom non trouvé
         else:
-            return self._generate_map(self.vinedos)
+            self._current_vinedos = self.vinedos
 
-    def _generate_map(self, vinedos: list[dict[str, Any]], focus: bool = False) -> str:
+        focus = vinedo_filter is not None
+        return self._generate_map(focus=focus)
+
+    def _generate_map(self, focus: bool = False) -> str:
         """
         Crée une carte folium avec un ou plusieurs vignobles.
         - focus=True => zoom + popup
         """
-        center, zoom = (
-            (vinedos[0]["coords"], MapConfig.FOCUS_ZOOM)
-            if focus and vinedos
-            else (MapConfig.CENTRE_OF_SPAIN, MapConfig.INIT_ZOOM)
-        )
-        spain_map = folium.Map(location=center, zoom_start=zoom)
-        for v in vinedos:
-            self._add_marker(spain_map, v, focus)
-        return spain_map.get_root().render()
+        if self._current_vinedos and focus:
+            center = self._current_vinedos[0]["coords"]
+            zoom = MapConfig.FOCUS_ZOOM
+        else:
+            center = MapConfig.CENTRE_OF_SPAIN
+            zoom = MapConfig.INIT_ZOOM
+
+        fmap = folium.Map(location=center, zoom_start=zoom)
+        for vinedo in self._current_vinedos:
+            self._add_marker(fmap, vinedo, focus)
+        return fmap.get_root().render()
 
     def _add_marker(
         self, fmap: folium.Map, vinedo: dict[str, Any], focus: bool
@@ -92,10 +97,10 @@ class MapManager:
 
         # Pour le polygone
         if focus:
-            polygone, coords = self._f_polygone(vinedo["nom"])
+            polygone, coords_polygone = self._f_polygone(vinedo["nom"])
             if polygone:
                 polygone.add_to(fmap)
-                fmap.fit_bounds(coords)  # recadrage automatique
+                fmap.fit_bounds(coords_polygone)
 
     def _format_tooltip(self, name: str) -> str:
         return f"""
@@ -127,7 +132,7 @@ class MapManager:
 
     def _f_polygone(
         self, name: str
-    ) -> tuple[Optional[folium.Polygon], list[list[float]]]:
+    ) -> Tuple[Optional[folium.Polygon], List[List[float]]]:
         """
         Création du polygone permettant de tracer la région viticole sélectionnée.
         - Extraction des données depuis un fichier .geojson.
