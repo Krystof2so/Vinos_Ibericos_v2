@@ -88,8 +88,9 @@ class MainWindow(QtWidgets.QMainWindow):
         for i, vinedo in enumerate(vinedos_sorted):
             row: int = i // Config.NBRE_COL_BTN
             col: int = i % Config.NBRE_COL_BTN
-            img_path: Path = Config.IMG_DIR_PATH / vinedo["img"]
-            btn: QtWidgets.QPushButton = VinedoButton(vinedo["nom"], str(img_path))
+            btn: QtWidgets.QPushButton = VinedoButton(
+                vinedo["nom"], str(Config.IMG_DIR_PATH / vinedo["img"])
+            )
             self.btn_group.addButton(btn)  # Ajout du bouton au groupe
             grid_buttons_layout.addWidget(btn, row, col)
         return right_frame
@@ -103,15 +104,10 @@ class MainWindow(QtWidgets.QMainWindow):
         """
         vbtn: VinedoButton = button  # type: ignore
         if not vbtn.isChecked():  # Bouton décoché
-            if self.detail_window:
-                self.detail_window.close()
-                self.detail_window = None
+            self._close_detail_window()
             self.update_map()  # vue globale
             return
-        # Fermer fenêtre précédente si existante
-        if self.detail_window:
-            self.detail_window.close()
-            self.detail_window = None
+        self._close_detail_window()
         selected_vinedo = next((v for v in self.vinedos if v["nom"] == vbtn.name), None)
         if selected_vinedo:
             self.detail_window = VinedoDetailDialog(
@@ -133,14 +129,18 @@ class MainWindow(QtWidgets.QMainWindow):
     def reset_interface(self) -> None:
         """Réinitialise la carte et le bouton sélectionné"""
         self.update_map()  # Réinitialiser la carte
-        if self.detail_window:
-            self.detail_window.close()
-            self.detail_window = None
+        self._close_detail_window()
         # récupère le bouton coché et le décoche (cela déclenchera toggled(False))
         checked_btn = self.btn_group.checkedButton()
         if checked_btn:
             checked_btn.setChecked(False)
             checked_btn.setStyleSheet(VinedoButton.DEFAULT_STYLE)
+
+    def _close_detail_window(self) -> None:
+        """Ferme la fenêtre de détail si elle est ouverte."""
+        if self.detail_window:
+            self.detail_window.close()
+            self.detail_window = None
 
 
 # --- Fonctions utilitaires ---
