@@ -81,17 +81,9 @@ class MapManager:
         """
         # Définitions des paramètres du marqueur selon le focus :
         icon_size = IconConfig.FOCUS_SIZE if focus else IconConfig.INIT_SIZE
-        popup = (
-            folium.Popup(
-                self._format_popup(vinedo), max_width=MapConfig.WIDTH_POPUP, show=True
-            )
-            if focus
-            else None
-        )
         folium.Marker(
             location=vinedo["coords"],
             tooltip=self._format_tooltip(vinedo["nom"]),
-            popup=popup,
             icon=folium.CustomIcon(str(PathConfig.WINE_ICON), icon_size=icon_size),
         ).add_to(fmap)
 

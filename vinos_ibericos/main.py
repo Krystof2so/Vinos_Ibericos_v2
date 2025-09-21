@@ -4,11 +4,12 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 import json
 
-from PySide6 import QtWidgets, QtCore
+from PySide6 import QtWidgets
 from PySide6.QtWebEngineWidgets import QWebEngineView
 
 from vinos_ibericos.map_manager import MapManager
 from vinos_ibericos.vinedo_button import VinedoButton
+from vinos_ibericos.vinedo_detail import VinedoDetailDialog
 
 
 @dataclass(frozen=True)
@@ -41,6 +42,7 @@ class MainWindow(QtWidgets.QMainWindow):
             v["nom"]: v["coords"] for v in vinedos
         }
         self.map_manager: MapManager = MapManager(vinedos)
+        self.detail_window: Optional[VinedoDetailDialog] = None
 
         # Groupement des boutons (pour une logique "un seul coché à la fois") :
         self.btn_group = QtWidgets.QButtonGroup(self)
@@ -70,20 +72,12 @@ class MainWindow(QtWidgets.QMainWindow):
         return self.browser
 
     def _setup_right_panel(self, vinedos: List[Dict[str, Any]]) -> QtWidgets.QFrame:
-        """Construit le panneau droit avec la grille de boutons, l'image et le reset."""
+        """Construit le panneau droit avec la grille des boutons et le reset."""
         right_frame = QtWidgets.QFrame()
         right_layout = QtWidgets.QVBoxLayout(right_frame)
         # Grille pour les boutons :
         grid_buttons_layout = QtWidgets.QGridLayout()
         right_layout.addLayout(grid_buttons_layout)
-        # Zone pour l'image :
-        self.image_label = QtWidgets.QLabel()
-        self.image_label.setAlignment(QtCore.Qt.AlignCenter)  # type: ignore
-        self.image_label.setFixedSize(*Config.IMG_LABEL_SIZE)
-        right_layout.addWidget(
-            self.image_label,
-            alignment=QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter,  # type: ignore
-        )
         # Bouton pour réinitialiser la carte :
         reset_btn = QtWidgets.QPushButton(Config.RESET_BUTTON)
         reset_btn.setFixedHeight(Config.FIXED_H_RESET_BTN)
@@ -104,22 +98,31 @@ class MainWindow(QtWidgets.QMainWindow):
         """
         Slot connecté à 'QButtonGroup.buttonClicked'.
         - 'button.isChecked()' permet de savoir si le bouton est maintenant coché ou non.
-        - Si décoché -> on considère la sélection annulée (on réinitialise la carte + image).
-        - Si coché   -> on affiche l'image et on centre la carte sur le vignoble sélectionné.
+        - Si décoché -> on considère la sélection annulée (on réinitialise la carte).
+        - Si coché   -> on centre la carte sur le vignoble sélectionné.
         """
         vbtn: VinedoButton = button  # type: ignore
         if not vbtn.isChecked():  # Bouton décoché
-            self.image_label.clear()
+            if self.detail_window:
+                self.detail_window.close()
+                self.detail_window = None
             self.update_map()  # vue globale
             return
-        # bouton coché : affichage image + centrage carte
-        pixmap = vbtn.get_pixmap()
-        if pixmap:
-            self.image_label.setPixmap(pixmap)
-            self.image_label.setToolTip(vbtn.name)
-        else:
-            self.image_label.setText(Config.NOT_IMG)
-        # Centrer la carte sur le vignoble sélectionné :
+        # Fermer fenêtre précédente si existante
+        if self.detail_window:
+            self.detail_window.close()
+            self.detail_window = None
+        selected_vinedo = next((v for v in self.vinedos if v["nom"] == vbtn.name), None)
+        if selected_vinedo:
+            self.detail_window = VinedoDetailDialog(
+                self, selected_vinedo, Config.IMG_DIR_PATH
+            )
+            parent_geo = self.geometry()
+            dw, dh = self.detail_window.width(), self.detail_window.height()
+            x = parent_geo.x() + (parent_geo.width() - dw) // 2
+            y = parent_geo.y() + (parent_geo.height() - dh) // 8
+            self.detail_window.move(max(0, x), max(0, y))
+            self.detail_window.show()
         self.update_map(vinedo_filter=vbtn.name)
 
     def update_map(self, vinedo_filter: Optional[str] = None) -> None:
@@ -128,9 +131,11 @@ class MainWindow(QtWidgets.QMainWindow):
         self.browser.setHtml(html_data)
 
     def reset_interface(self) -> None:
-        """Réinitialise la carte, l'image et le bouton sélectionné"""
+        """Réinitialise la carte et le bouton sélectionné"""
         self.update_map()  # Réinitialiser la carte
-        self.image_label.clear()  # Vider l'image
+        if self.detail_window:
+            self.detail_window.close()
+            self.detail_window = None
         # récupère le bouton coché et le décoche (cela déclenchera toggled(False))
         checked_btn = self.btn_group.checkedButton()
         if checked_btn:
