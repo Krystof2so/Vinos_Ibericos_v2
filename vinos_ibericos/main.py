@@ -56,9 +56,9 @@ class MainWindow(QtWidgets.QMainWindow):
         main_layout = QtWidgets.QHBoxLayout(central_widget)
 
         # Partie carte :
-        map_view = self._setup_map_view()
+        self.map_view = self._setup_map_view()
         main_layout.addWidget(
-            map_view, stretch=Config.STRETCH_MAP_VIEW
+            self.map_view, stretch=Config.STRETCH_MAP_VIEW
         )  # plus large pour la carte
 
         # Partie panneau droit (ajout des boutons au groupe):
@@ -109,16 +109,8 @@ class MainWindow(QtWidgets.QMainWindow):
             return
         self._close_detail_window()
         selected_vinedo = next((v for v in self.vinedos if v["nom"] == vbtn.name), None)
-        if selected_vinedo:
-            self.detail_window = VinedoDetailDialog(
-                self, selected_vinedo, Config.IMG_DIR_PATH
-            )
-            parent_geo = self.geometry()
-            dw, dh = self.detail_window.width(), self.detail_window.height()
-            x = parent_geo.x() + (parent_geo.width() - dw) // 2
-            y = parent_geo.y() + (parent_geo.height() - dh) // 8
-            self.detail_window.move(max(0, x), max(0, y))
-            self.detail_window.show()
+        if selected_vinedo:  # On affiche la fenêtre consacrée au vignoble
+            self._display_detail_window(selected_vinedo)
         self.update_map(vinedo_filter=vbtn.name)
 
     def update_map(self, vinedo_filter: Optional[str] = None) -> None:
@@ -135,6 +127,27 @@ class MainWindow(QtWidgets.QMainWindow):
         if checked_btn:
             checked_btn.setChecked(False)
             checked_btn.setStyleSheet(VinedoButton.DEFAULT_STYLE)
+
+    def _display_detail_window(self, vinedo: dict) -> None:
+        """
+        Positionnent et affichage de la fenêtre de détail d'un vignoble.
+        - Positionnement : centrée sur la partie gauche de la carte.
+        - Définition de sa taille (cf. 'VinedoDetailDialog').
+        - La déplacer aux coordonnées voulues et l'afficher.
+        """
+        # Positionnement et affichage de la fenêtre de détail :
+        self.detail_window = VinedoDetailDialog(self, vinedo, Config.IMG_DIR_PATH)
+        # Récupérer la position globale du widget de la carte :
+        map_top_left = self.map_view.mapToGlobal(self.map_view.rect().topLeft())
+        mw, mh = self.map_view.width(), self.map_view.height()
+        # Taille de la fenêtre de détail :
+        dw, dh = self.detail_window.width(), self.detail_window.height()
+        # Positionnent :
+        x = map_top_left.x() + (mw // 2 - dw) // 2  # Centre gauche
+        y = map_top_left.y() + (mh - dh) // 2  # Centre
+        # Déplacer et afficher :
+        self.detail_window.move(max(0, x), max(0, y))
+        self.detail_window.show()
 
     def _close_detail_window(self) -> None:
         """Ferme la fenêtre de détail si elle est ouverte."""
