@@ -118,6 +118,30 @@
     "coords": [41.3187, -6.3979],
     "description": "La D.O. Arribes a été officiellement reconnue en 2007. Elle se situe sur les bordures du fleuve Duero (Duero en espagnol, Douro en portugais), sur la frontière ouest de l'Espagne avec le Portugal, dans les provinces de Zamora et Salamanca en Castille-et-León. Le paysage est très accidenté : vignobles en terrasses sur des pentes escarpées le long des canyons du Duero, avec des sols granitiques, une topographie qui favorise un microclimat particulier. Les cépages autochtones comme Juan García (rouge), Rufete, les blancs Malvasía, Albillo, etc., jouent un rôle important.",
     "img": "arribes.jpg"
+  },
+  {
+    "nom": "Alicante",
+    "coords": [38.34517, -0.48149],
+    "description": "",
+    "img": ""
+  },
+  {
+    "nom": "Bierzo",
+    "coords": [42.54664, -6.59619],
+    "description": "",
+    "img": ""
+  },
+  {
+    "nom": "Bullas",
+    "coords": [38.0481, -1.6706],
+    "description": "",
+    "img": ""
+  },
+  {
+    "nom": "Cangas",
+    "coords": [43.1771, -6.5508],
+    "description": "",
+    "img": ""
   }
 ]
 
