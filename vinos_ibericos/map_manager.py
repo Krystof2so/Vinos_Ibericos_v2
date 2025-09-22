@@ -127,8 +127,7 @@ class MapManager:
     ) -> Tuple[Optional[folium.Polygon], List[List[float]]]:
         """
         Création du polygone permettant de tracer la région viticole sélectionnée.
-        - Extraction des données depuis un fichier .geojson.
-        - Retourne un objet folium.Polygon.
+        - Extraction des données depuis un fichier .geojson. Retourne un objet folium.Polygon.
         """
         geojson_file: Path = geojson_dir / f"{name.lower().replace(' ', '_')}.geojson"
         # Charger le fichier GeoJSON s'il existe :
@@ -149,9 +148,9 @@ class MapManager:
         polygon_coords = [[lat, lon] for lon, lat in raw_coords]
         return folium.Polygon(
             locations=polygon_coords,
-            color="#414f64",
+            color="#590212",
             fill=True,
-            fill_color="#6f8bbe",
-            fill_opacity=0.5,
+            fill_color="#8A9BA6",
+            fill_opacity=0.6,
             weight=3,
         ), polygon_coords

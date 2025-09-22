@@ -11,6 +11,14 @@ class ConfigUI:
     DEFAULT_TITLE: str = "Détails vignoble"
     DETAIL_WIN_SIZE: tuple[int, int] = (650, 680)
     DETAIL_IMG_SIZE: tuple[int, int] = (600, 320)
+    # Palette de couleurs  de base :
+    COLOR_PRIMARY: str = "#590212"  # Bordeaux vin
+    COLOR_SECONDARY: str = "#8C6B58"  # Brun chaud
+    COLOR_NEUTRAL: str = "#BFA18F"  # Beige doux
+    COLOR_ACCENT: str = "#8A9BA6"  # Gris bleuté
+    COLOR_DARK: str = "#261D15"  # Brun foncé
+    # Couleurs additionnelles :
+    PARCHMENT: str = "#E8D9CC"  # Beige clair (couleur parchemin)
 
 
 class VinedoDetailDialog(QtWidgets.QDialog):
@@ -30,6 +38,7 @@ class VinedoDetailDialog(QtWidgets.QDialog):
         flags = Qt.Window | Qt.WindowStaysOnTopHint  # type: ignore
         self.setWindowFlags(flags)
         self.setFixedSize(*ConfigUI.DETAIL_WIN_SIZE)
+        self.setStyleSheet(self._get_dialog_style())  # Style fenêtre
         # Widget principale de la fenêtre de détail :
         layout = QtWidgets.QVBoxLayout(self)
         # Image (widget 'QLabel'):
@@ -38,7 +47,7 @@ class VinedoDetailDialog(QtWidgets.QDialog):
         self.img_label.setFixedHeight(ConfigUI.DETAIL_IMG_SIZE[1])
         # Titre (widget 'QLabel'):
         title_details = QtWidgets.QLabel(
-            f"<h1 style='color:#d08770;'><b>{vinedo.get('nom', '')}<\b>"
+            f"<h1 style='color:{ConfigUI.COLOR_PRIMARY}; font-weight:bold;'>{vinedo.get('nom', '')}</h1>"
         )
         title_details.setTextFormat(Qt.RichText)  # type: ignore
         # Description (widget 'QTextBrowser'):
@@ -59,31 +68,7 @@ class VinedoDetailDialog(QtWidgets.QDialog):
         self.desc_label.setReadOnly(True)
         self.desc_label.setHtml(self.vinedo.get("description", ""))
         # Couleur du texte et style du widget :
-        self.desc_label.setStyleSheet("""
-            QTextBrowser {
-                color: #88c0d0;             /* couleur du texte */
-                border: 1px solid #8fbcbb;  /* liseré */
-                border-radius: 6px;         /* angles arrondis */
-                padding: 8px;
-            }
-            /* QScrollBar du QTextBrowser (fond + largeur) */
-            QTextBrowser QScrollBar:vertical {
-                background: #4f5664;   /* fond de la zone scrollbar */
-                width: 8px;
-                margin: 0px 0px 0px 0px;
-                border-radius: 6px;
-            }
-            /* Curseur du curseur de la QScrollBar */
-            QScrollBar::handle:vertical {background: #d08770;}
-            /* Curseur hover */
-            QScrollBar::handle:vertical:hover {background: #d09b80;}
-            /* Suppression des flèches haut/bas (optionnel) */
-            QTextBrowser QScrollBar::add-line:vertical,
-            QTextBrowser QScrollBar::sub-line:vertical {
-                height: 0px;
-                background: none;
-            }
-        """)
+        self.desc_label.setStyleSheet(self._get_text_description_style())
         self.desc_label.setOpenExternalLinks(
             True
         )  # Active l'ouverture des liens dans le navigateur externe
@@ -107,3 +92,57 @@ class VinedoDetailDialog(QtWidgets.QDialog):
             self.img_label.setPixmap(scaled)
         else:
             self.img_label.setText("Image introuvable")
+
+    def _get_dialog_style(self) -> str:
+        return f"""
+        QDialog {{
+            background-color: {ConfigUI.COLOR_NEUTRAL};
+            color: {ConfigUI.COLOR_DARK};
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 12pt;
+        }}
+        QPushButton {{
+            background-color: {ConfigUI.COLOR_PRIMARY};
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-weight: bold;
+        }}
+        QPushButton:hover {{
+            background-color: {ConfigUI.COLOR_SECONDARY};
+        }}
+        """
+
+    def _get_text_description_style(self) -> str:
+        return f"""
+        QTextBrowser {{
+                color: {ConfigUI.COLOR_DARK};                       /* couleur du texte */
+                background: {ConfigUI.PARCHMENT};                   /* fond pour texte */             
+                border: 1px solid {ConfigUI.COLOR_SECONDARY};       /* liseré */
+                border-radius: 8px;                                 /* angles arrondis */
+                padding: 10px;
+            }}
+            /* QScrollBar du QTextBrowser (fond + largeur) */
+            QTextBrowser QScrollBar:vertical {{
+                background: {ConfigUI.COLOR_NEUTRAL};              /* fond de la zone scrollbar */
+                width: 8px;
+                margin: 0px;
+                border-radius: 6px;
+            }}
+            /* Curseur du curseur de la QScrollBar */
+            QScrollBar::handle:vertical {{
+                background: {ConfigUI.COLOR_ACCENT};
+                border-radius: 4px;
+            }}
+            /* Curseur hover */
+            QScrollBar::handle:vertical:hover {{
+                background: {ConfigUI.COLOR_PRIMARY};
+            }}
+            /* Suppression des flèches haut/bas (optionnel) */
+            QTextBrowser QScrollBar::add-line:vertical,
+            QTextBrowser QScrollBar::sub-line:vertical {{
+                height: 0px;
+                background: none;
+            }}
+        """
