@@ -6,6 +6,8 @@ from PySide6.QtWidgets import QPushButton
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QPixmap
 
+from vinos_ibericos.ui.styles.global_style import GlobalStyle
+
 
 @dataclass(frozen=True)
 class Config:
@@ -27,33 +29,8 @@ class VinedoButton(QPushButton):
     """
 
     # style par défaut (non coché)
-    DEFAULT_STYLE: str = """
-        QPushButton {
-            background-color: none;
-            border: 1px solid grey;
-            border-radius: 6px;
-            padding: 6px;
-        }
-        QPushButton:hover {
-            background-color: #f1bfc2;
-            font-weight: bold;
-            color: #6b5556;
-        }
-    """
-
-    # style sélectionné (coché)
-    SELECTED_STYLE: str = """
-        QPushButton {
-            background-color: #f8d7da;
-            border: 4px solid #800020;
-            border-radius: 8px;
-            font-weight: bold;
-            color: #4a0e1f;
-        }
-        QPushButton:hover {
-            background-color: #f1bfc2;
-        }
-    """
+    DEFAULT_STYLE: str = GlobalStyle.get_base_style()  # 'QPushButton' non sélectionné
+    SELECTED_STYLE: str = GlobalStyle.get_button_selected_style()  # sélectionné
 
     def __init__(
         self, name: str, image_path: str, parent: Optional[QPushButton] = None

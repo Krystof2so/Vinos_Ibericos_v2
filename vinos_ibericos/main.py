@@ -7,9 +7,10 @@ import json
 from PySide6 import QtWidgets
 from PySide6.QtWebEngineWidgets import QWebEngineView
 
+from vinos_ibericos.ui.styles.global_style import GlobalStyle
 from vinos_ibericos.map_manager import MapManager
 from vinos_ibericos.vinedo_button import VinedoButton
-from vinos_ibericos.vinedo_detail import VinedoDetailDialog
+from vinos_ibericos.ui.components.vinedo_detail import VinedoDetailDialog
 
 
 @dataclass(frozen=True)
@@ -56,20 +57,25 @@ class MainWindow(QtWidgets.QMainWindow):
         main_layout = QtWidgets.QHBoxLayout(central_widget)
 
         # Partie carte :
-        self.map_view = self._setup_map_view()
+        self.map_frame = self._setup_map_view()
         main_layout.addWidget(
-            self.map_view, stretch=Config.STRETCH_MAP_VIEW
+            self.map_frame, stretch=Config.STRETCH_MAP_VIEW
         )  # plus large pour la carte
 
         # Partie panneau droit (ajout des boutons au groupe):
         right_frame = self._setup_right_panel(vinedos)
         main_layout.addWidget(right_frame, stretch=Config.STRETCH_RIGHT_PANEL)
 
-    def _setup_map_view(self) -> QWebEngineView:
+    def _setup_map_view(self) -> QtWidgets.QFrame:
         """Construit et initialise la vue de la carte"""
-        self.browser = QWebEngineView()
+        frame = QtWidgets.QFrame()
+        layout = QtWidgets.QVBoxLayout(frame)
+        layout.setContentsMargins(0, 0, 0, 0)  # Pas de marges internes
+        self.map_view = QWebEngineView()
         self.update_map()
-        return self.browser
+        layout.addWidget(self.map_view)
+        frame.setStyleSheet(GlobalStyle.widget_border())
+        return frame
 
     def _setup_right_panel(self, vinedos: List[Dict[str, Any]]) -> QtWidgets.QFrame:
         """Construit le panneau droit avec la grille des boutons et le reset."""
@@ -116,7 +122,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def update_map(self, vinedo_filter: Optional[str] = None) -> None:
         """Regénère la carte avec tous les marqueurs, centrée sur 'center'"""
         html_data = self.map_manager.generate_map_html(vinedo_filter=vinedo_filter)
-        self.browser.setHtml(html_data)
+        self.map_view.setHtml(html_data)
 
     def reset_interface(self) -> None:
         """Réinitialise la carte et le bouton sélectionné"""
@@ -175,6 +181,9 @@ def load_datas() -> list[dict[str, Any]]:
 
 def main() -> None:
     app = QtWidgets.QApplication([])
+    app.setStyleSheet(
+        GlobalStyle.get_base_style()
+    )  # Application du style global à toute l'UI
     main_win: MainWindow = MainWindow(load_datas())
     main_win.showMaximized()  # Plein écran avec barre de titre
     app.exec()
