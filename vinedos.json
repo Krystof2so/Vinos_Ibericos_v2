@@ -166,6 +166,30 @@
     "coords": [40.4550, -4.4647],
     "description": "",
     "img": ""
+  },
+  {
+    "nom": "Txakoli de Álava",
+    "coords": [43.0511, -3.0010],
+    "description": "",
+    "img": ""
+  },
+  {
+    "nom": "Txakoli de Getaria",
+    "coords": [43.3030, -2.2020],
+    "description": "",
+    "img": ""
+  },
+  {
+    "nom": "Txakoli de Vizcaya",
+    "coords": [43.2630, -2.9350],
+    "description": "",
+    "img": ""
+  },
+  {
+    "nom": "Cigales",
+    "coords": [41.7575, -4.6992],
+    "description": "",
+    "img": ""
   }
 ]
 
