@@ -123,7 +123,7 @@
     "nom": "Alicante",
     "coords": [38.34517, -0.48149],
     "description": "",
-    "img": ""
+    "img": "alicante.jpg"
   },
   {
     "nom": "Bierzo",
@@ -140,6 +140,30 @@
   {
     "nom": "Cangas",
     "coords": [43.1771, -6.5508],
+    "description": "",
+    "img": ""
+  },
+  {
+    "nom": "Málaga",
+    "coords": [36.7213, -4.4214],
+    "description": "",
+    "img": ""
+  },
+  {
+    "nom": "Priorato",
+    "coords": [41.1270, 0.7203],
+    "description": "",
+    "img": ""
+  },
+  {
+    "nom": "La Rioja",
+    "coords": [42.4653, -2.4480],
+    "description": "",
+    "img": ""
+  },
+  {
+    "nom": "Cebreros",
+    "coords": [40.4550, -4.4647],
     "description": "",
     "img": ""
   }
