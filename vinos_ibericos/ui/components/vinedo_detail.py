@@ -39,15 +39,22 @@ class VinedoDetailDialog(QtWidgets.QDialog):
         self.desc_label = QtWidgets.QTextBrowser()
         self._ad_description()
 
-        # Bouton fermer
+        # Layout des 'QPushButton' :
+        btns_layout = QtWidgets.QHBoxLayout()
+        # Bouton de fermeture de la fenêtre :
         btn_close = QtWidgets.QPushButton("Fermer")
         btn_close.clicked.connect(self.close)
+        # Bouton d'ajout de bodega :
+        btn_add_bodega = QtWidgets.QPushButton("Ajouter une bodega")
+        # Ajout des 'QPushButton' :
+        btns_layout.addWidget(btn_add_bodega, alignment=Qt.AlignLeft)  # type: ignore
+        btns_layout.addWidget(btn_close, alignment=Qt.AlignRight)  # type: ignore
 
         # Ajout au layout
         layout.addWidget(self.img_label)
         layout.addWidget(title_details, alignment=Qt.AlignCenter)  # type: ignore
         layout.addWidget(self.desc_label)
-        layout.addWidget(btn_close, alignment=Qt.AlignRight)  # type: ignore
+        layout.addLayout(btns_layout)
 
         self._load_image()
 
