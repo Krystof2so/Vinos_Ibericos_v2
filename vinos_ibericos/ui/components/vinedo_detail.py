@@ -4,7 +4,7 @@ from typing import Any, Dict, Optional
 from PySide6 import QtWidgets, QtGui
 from PySide6.QtCore import Qt
 
-from vinos_ibericos.ui.config_ui import ConfigUI
+from vinos_ibericos.ui.config_ui import Colors, ConfigUI
 from vinos_ibericos.ui.styles.global_style import GlobalStyle
 
 
@@ -31,7 +31,7 @@ class VinedoDetailDialog(QtWidgets.QDialog):
 
         # Titre
         title_details = QtWidgets.QLabel(
-            f"<h1 style='color:{ConfigUI.COLOR_PRIMARY}; font-weight:bold;'>{vinedo.get('nom', '')}</h1>"
+            f"<h1 style='color:{Colors.PRIMARY_ACCENT}; font-weight:bold;'>{vinedo.get('nom', '')}</h1>"
         )
         title_details.setTextFormat(Qt.RichText)  # type: ignore
 
@@ -52,9 +52,20 @@ class VinedoDetailDialog(QtWidgets.QDialog):
         self._load_image()
 
     def _ad_description(self):
+        """Insertion de la description (format HTML)."""
         self.desc_label.setReadOnly(True)
-        self.desc_label.setHtml(self.vinedo.get("description", ""))
+        # Appliquer le style du widget (bord, fond, padding...) :
         self.desc_label.setStyleSheet(GlobalStyle.get_text_browser_style())
+        # Appliquer la feuille de style CSS pour le document HTML interne :
+        self.desc_label.document().setDefaultStyleSheet(
+            GlobalStyle.get_text_browser_html_css()
+        )
+        # Charger le HTML :
+        raw_html = self.vinedo.get("description", "")
+        # Encapsulation du body :
+        wrapped = f"<html><head></head><body>{raw_html}</body></html>"
+        self.desc_label.setHtml(wrapped)
+        # Ouverture des liens avec le navigateur par défaut du système :
         self.desc_label.setOpenExternalLinks(True)
 
     def _load_image(self) -> None:

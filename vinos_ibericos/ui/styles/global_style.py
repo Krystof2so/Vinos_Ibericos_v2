@@ -6,7 +6,7 @@
 # - Fichier importé par les composants                #
 #######################################################
 
-from vinos_ibericos.ui.config_ui import ConfigUI
+from vinos_ibericos.ui.config_ui import ConfigUI, Colors
 
 
 class GlobalStyle:
@@ -15,35 +15,36 @@ class GlobalStyle:
         """Style global appliqué à toute l'application"""
         return f"""
         QWidget {{
-            background-color: {ConfigUI.COLOR_NEUTRAL};
-            color: {ConfigUI.COLOR_DARK};
+            background-color: {Colors.BACKGROUND_DARK};
+            color: {Colors.TEXT_SECONDARY};
             font-family: {ConfigUI.FONT_FAMILY};
             font-size: {ConfigUI.FONT_SIZE}pt;
         }}
         QPushButton {{
-            background-color: {ConfigUI.COLOR_PRIMARY};
-            color: #F5E1D0;
+            background-color: {Colors.BACKGROUND_DARK_2};
+            color: {Colors.BACKGROUND_LIGHT};
             border: none;
             padding: 6px 14px;
-            border: 2px solid {ConfigUI.PARCHMENT};
+            border: 1px solid {Colors.PRIMARY_ACCENT};
             border-radius: 8px;
             font-size: 20px;
         }}
         QPushButton:hover {{
-            background-color: {ConfigUI.COLOR_SECONDARY};
+            background-color: {Colors.PRIMARY_MAIN};
+            border: 1px solid {Colors.BORDER_COLOR};
         }}
         QScrollBar:vertical {{
-            background: {ConfigUI.COLOR_NEUTRAL};
+            background: {Colors.TEXT_SECONDARY};
             width: 8px;
             margin: 0px;
             border-radius: 6px;
         }}
         QScrollBar::handle:vertical {{
-            background: {ConfigUI.COLOR_ACCENT};
+            background: {Colors.PRIMARY_ACCENT};
             border-radius: 4px;
         }}
-        QScrollBar::handle:vertical:hover {{
-            background: {ConfigUI.COLOR_PRIMARY};
+        QScrollBar::handle:hover {{
+            background: {Colors.WARNING};
         }}
         QScrollBar::add-line:vertical,
         QScrollBar::sub-line:vertical {{
@@ -57,8 +58,8 @@ class GlobalStyle:
         """Style spécifique aux QDialog"""
         return f"""
         QDialog {{
-            background-color: {ConfigUI.COLOR_NEUTRAL};
-            color: {ConfigUI.COLOR_DARK};
+            background-color: {Colors.BACKGROUND_DARK};
+            color: {Colors.BORDER_COLOR};
         }}
         """
 
@@ -67,30 +68,56 @@ class GlobalStyle:
         """Style pour les QTextBrowser"""
         return f"""
         QTextBrowser {{
-            color: {ConfigUI.COLOR_DARK};
-            background: {ConfigUI.PARCHMENT};
-            border: 1px solid {ConfigUI.COLOR_SECONDARY};
+            color: {Colors.BACKGROUND_LIGHT};
+            background: {Colors.BACKGROUND_DARK_2};
+            border: 1px solid {Colors.BORDER_COLOR};
             border-radius: 8px;
             padding: 10px;
-            font-family: 'Book Antiqua','Garamond', 'Georgia', serif;
-            font-size: 18px;
-            line-height: 1.4em;   /* espacement entre lignes */
+        }}
+        QTextBrowser a {{
+            color: {Colors.HIGHLIGHT};         /* couleur du lien normal */
+            text-decoration: none;             /* enlève le soulignement */
+            font-weight: bold;
+        }}
+        QTextBrowser a:hover {{
+            color: {Colors.WARNING};           /* couleur au survol */
+            text-decoration: underline;        /* soulignement au survol */
         }}
         """
+
+    @staticmethod
+    def get_text_browser_html_css() -> str:
+        # CSS ici s'applique au contenu HTML du QTextDocument
+        return f"""
+        body {{
+            font-family: 'Book Antiqua', 'Garamond', 'Georgia', serif;
+            font-size: 18px;
+            line-height: 1.1;
+            color: {Colors.BACKGROUND_LIGHT};
+            margin: 0;
+            padding: 0;
+            background: transparent; /* laisse voir le background du widget */
+        }}
+        a {{
+            color: {Colors.WARNING};   /* couleur lien normal */
+            text-decoration: none;
+            font-weight: bold;
+        }}
+    """
 
     @staticmethod
     def get_button_selected_style() -> str:
         """Style des boutons sélectionnés (harmonisé au thème)"""
         return f"""
         QPushButton {{
-            background-color: {ConfigUI.COLOR_ACCENT};          /* gris bleuté doux */
-            border: 3px solid {ConfigUI.COLOR_PRIMARY};         /* rappel bordeaux vin */
+            background-color: {Colors.PRIMARY_MAIN};
             border-radius: 10px;
-            color: {ConfigUI.COLOR_DARK};
+            color: {Colors.BACKGROUND_LIGHT};
+            border: 2px solid {Colors.BORDER_COLOR};
         }}
         QPushButton:hover {{
-            background-color: {ConfigUI.COLOR_SECONDARY};       /* brun chaud au survol */
-            color: white;
+            background-color: {Colors.BACKGROUND_LIGHT};       /* brun chaud au survol */
+            color: {Colors.TEXT_PRIMARY};
         }}
         """
 
@@ -98,6 +125,6 @@ class GlobalStyle:
     def widget_border() -> str:
         return f"""
         QFrame {{
-            border: 2px solid {ConfigUI.COLOR_DARK}; /* bordure brun foncé */
+            border: 2px solid {Colors.BORDER_COLOR}; /* bordure brun foncé */
         }}
         """

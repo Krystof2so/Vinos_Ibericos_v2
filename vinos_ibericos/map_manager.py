@@ -5,6 +5,8 @@ from typing import Dict, Any, List, Optional, Tuple, TypedDict
 
 import folium
 
+from vinos_ibericos.ui.config_ui import Colors
+
 
 @dataclass(frozen=True)
 class MapConfig:
@@ -148,9 +150,9 @@ class MapManager:
         polygon_coords = [[lat, lon] for lon, lat in raw_coords]
         return folium.Polygon(
             locations=polygon_coords,
-            color="#590212",
+            color=Colors.PRIMARY_MAIN,
             fill=True,
-            fill_color="#8A9BA6",
-            fill_opacity=0.6,
+            fill_color=Colors.PRIMARY_MAIN,
+            fill_opacity=0.4,
             weight=3,
         ), polygon_coords
