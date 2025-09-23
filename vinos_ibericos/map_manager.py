@@ -98,14 +98,15 @@ class MapManager:
 
     def _format_tooltip(self, name: str) -> str:
         return f"""
-            <span style='
+            <div style='
                 font-size:18px;
                 font-weight:bold;
-                color:purple;
-                background-color:lightgrey;
+                color:{Colors.BACKGROUND_LIGHT};
+                background-color:{Colors.PRIMARY_MAIN};
                 padding:2px 4px; 
                 border-radius:3px;
-            '>{name}</span>
+                border: 2px solid {Colors.BORDER_COLOR};
+            '>{name}</div>
         """
 
     def _format_popup(self, vinedo: Dict[str, Any]) -> str:

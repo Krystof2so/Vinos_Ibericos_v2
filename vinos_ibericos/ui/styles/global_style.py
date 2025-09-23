@@ -40,11 +40,11 @@ class GlobalStyle:
             border-radius: 6px;
         }}
         QScrollBar::handle:vertical {{
-            background: {Colors.PRIMARY_ACCENT};
+            background: {Colors.PRIMARY_MAIN};
             border-radius: 4px;
         }}
         QScrollBar::handle:hover {{
-            background: {Colors.WARNING};
+            background: {Colors.PRIMARY_ACCENT};
         }}
         QScrollBar::add-line:vertical,
         QScrollBar::sub-line:vertical {{
@@ -74,15 +74,6 @@ class GlobalStyle:
             border-radius: 8px;
             padding: 10px;
         }}
-        QTextBrowser a {{
-            color: {Colors.HIGHLIGHT};         /* couleur du lien normal */
-            text-decoration: none;             /* enlève le soulignement */
-            font-weight: bold;
-        }}
-        QTextBrowser a:hover {{
-            color: {Colors.WARNING};           /* couleur au survol */
-            text-decoration: underline;        /* soulignement au survol */
-        }}
         """
 
     @staticmethod
@@ -99,11 +90,11 @@ class GlobalStyle:
             background: transparent; /* laisse voir le background du widget */
         }}
         a {{
-            color: {Colors.WARNING};   /* couleur lien normal */
-            text-decoration: none;
-            font-weight: bold;
+            color: {Colors.PRIMARY_ACCENT};
+            text-decoration: underline;            /* on active le soulignement */
+            text-decoration-color: {Colors.PRIMARY_ACCENT};  /* couleur spécifique du soulignement */
         }}
-    """
+        """
 
     @staticmethod
     def get_button_selected_style() -> str:

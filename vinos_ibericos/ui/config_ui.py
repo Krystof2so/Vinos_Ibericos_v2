@@ -16,7 +16,7 @@ class Colors:
     """Palette de couleurs."""
 
     PRIMARY_MAIN = (
-        "#a90a2e"  # Boutons principaux, titres, éléments clés (Rouge bordeaux)
+        "#8a4253"  # Boutons principaux, titres, éléments clés (Rouge bordeaux)
     )
     PRIMARY_ACCENT = "#e07d00"  # Accent / hover / notification (Orange)
     BACKGROUND_LIGHT = "#e6d4c3"  # Fond principal (Beige clair type parchemin)
