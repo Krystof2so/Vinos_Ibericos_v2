@@ -33,6 +33,81 @@ CREATE TABLE IF NOT EXISTS bodegas (
 """
 
 
+class BodegaManager:
+    def __init__(self, db_path: Optional[Union[str, Path]] = None):
+        """Initialise le gestionnaire et ouvre la connexion à la base SQLite."""
+        self.conn = init_db(db_path)
+
+    def add_bodega(self, data: dict) -> Optional[int]:
+        """
+        Insère une bodegadans la base.
+        data: dictionnaire avec clés :
+          name, cp, town, street, number, comp, lat, lon, website, do_name
+        Retourne l'ID de la bodega insérée.
+        """
+        sql = """
+        INSERT INTO bodegas
+        (name, cp, town, street, number, comp, lat, lon, website, do_name)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """
+        # Préparer les valeurs dans le bon ordre :
+        values = (
+            data.get("name"),
+            data.get("cp"),
+            data.get("town"),
+            data.get("street"),
+            data.get("number"),
+            data.get("comp"),
+            data.get("lat"),
+            data.get("lon"),
+            data.get("website"),
+            data.get("do_name"),
+        )
+
+        cur = self.conn.cursor()
+        cur.execute(sql, values)
+        self.conn.commit()
+        return cur.lastrowid
+
+    def update_bodega(self, id: int, data: dict):
+        """Modifie une bodega."""
+        pass
+
+    def delete_bodega(self, id: int) -> bool:
+        """
+        Supprime une bodega à partir de son ID.
+        Retourne True si une ligne a été supprimée, False sinon.
+        """
+        sql = "DELETE FROM bodegas WHERE id = ?"
+        cur = self.conn.cursor()
+        cur.execute(sql, (id,))
+        self.conn.commit()
+        return cur.rowcount > 0
+
+    def get_bodega(self, id: int) -> Optional[dict]:
+        """Retourne une bodega par son ID, ou None si introuvable."""
+        sql = "SELECT * FROM bodegas WHERE id = ?"
+        cur = self.conn.execute(sql, (id,))
+        row = cur.fetchone()
+        if row is None:
+            return None
+        # Conversion tuple -> dict
+        columns = [col[0] for col in cur.description]  # noms des colonnes
+        return dict(zip(columns, row))
+
+    def get_all_bodegas(self) -> list[dict]:
+        """Retourne la liste de toutes les bodegas sous forme de dictionnaires."""
+        sql = "SELECT * FROM bodegas"
+        cur = self.conn.execute(sql)
+        rows = cur.fetchall()
+
+        if not rows:
+            return []
+
+        columns = [col[0] for col in cur.description]  # noms des colonnes
+        return [dict(zip(columns, row)) for row in rows]
+
+
 def create_bodegas_table(conn: sqlite3.Connection) -> None:
     """Crée la table `bodegas` si n'existe pas."""
     cursor = conn.cursor()
@@ -59,12 +134,8 @@ def init_db(db_path: Optional[Union[str, Path]] = None) -> sqlite3.Connection:
 
 
 if __name__ == "__main__":
-    # A utiliser localement pour vérification sans lancer toute l'application
-    conn = init_db()
-    print(f"Database initialisée : {DEFAULT_DB_PATH.resolve()}")
-    cur = conn.execute(
-        "SELECT name FROM sqlite_master WHERE type='table' AND name='bodegas';"
-    )  # vérifier la présence de la table
-    found = cur.fetchone() is not None
-    print("Table 'bodegas' créée :", found)
-    conn.close()
+    manager = BodegaManager()
+    # Récupérer toutes les bodegas
+    bodegas = manager.get_all_bodegas()
+    for b in bodegas:
+        print(b["id"], b["name"], b["do_name"])
