@@ -68,7 +68,7 @@
   {
     "nom": "Almansa",
     "coords": [38.9384, -1.8613],
-    "description": "La viticulture dans la région d'Almansa remonte probablement au XVIe siècle, période durant laquelle la production de vin s'est installée de manière continue. Située à environ 700 mètres d'altitude, Almansa est la région viticole la plus orientale de Castille-La Manche, bénéficiant d'un climat méditerranéen continentalisé favorable à la culture de la vigne.",
+    "description": "<p>Située à l’est de la <a href=\"https://fr.wikipedia.org/wiki/Castille-La_Manche\">Castille-La Manche</a>, la <a href=\"https://denominacion-origen-almansa.com/\">DO Almansa</a> s’élève entre 700 et 1 100 mètres d’altitude. La viticulture y est attestée depuis le XVI<sup>e</sup> siècle et l’appellation a été officiellement créée en 1966, grâce notamment à l’impulsion de l’œnologue <strong>Mario Bonete</strong>, figure clé de sa reconnaissance.</p>\n<p>Aujourd’hui, la DO regroupe 11 bodegas réparties sur 8 communes de la <a href=\"https://fr.wikipedia.org/wiki/Province_d%27Albacete\">province d’Albacete</a>, avec une production annuelle avoisinant 6,5 millions de bouteilles. Elle s’illustre par la qualité de ses vins embouteillés, qui ont marqué un tournant décisif dans l’histoire viticole de la région.</p>",
     "img": "almansa.jpg"
   },
   {
@@ -212,6 +212,30 @@
   {
     "nom": "León",
     "coords": [42.5987, -5.5671],
+    "description": "",
+    "img": ""
+  },
+  {
+    "nom": "Manchuela",
+    "coords": [39.4406, -1.7507],
+    "description": "",
+    "img": ""
+  },
+  {
+    "nom": "Manzanilla",
+    "coords": [36.7781, -6.3516],
+    "description": "",
+    "img": ""
+  },
+  {
+    "nom": "Méntrida",
+    "coords": [40.2367, -4.1903],
+    "description": "",
+    "img": ""
+  },
+  {
+    "nom": "Mondéjar",
+    "coords": [40.3267, -3.1133],
     "description": "",
     "img": ""
   }
