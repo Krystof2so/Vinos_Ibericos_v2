@@ -190,6 +190,30 @@
     "coords": [41.7575, -4.6992],
     "description": "",
     "img": ""
+  },
+  {
+    "nom": "Conca de\t\t Barberá",
+    "coords": [41.3761, 1.1640],
+    "description": "",
+    "img": ""
+  },
+  {
+    "nom": "Costers del Segre",
+    "coords": [41.6176, 0.6200],
+    "description": "",
+    "img": ""
+  },
+  {
+    "nom": "Jerez",
+    "coords": [36.6860, -6.1360],
+    "description": "",
+    "img": ""
+  },
+  {
+    "nom": "León",
+    "coords": [42.5987, -5.5671],
+    "description": "",
+    "img": ""
   }
 ]
 

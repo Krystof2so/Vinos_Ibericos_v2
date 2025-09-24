@@ -25,7 +25,7 @@ class Config:
     STRETCH_RIGHT_PANEL: int = 1
     IMG_LABEL_SIZE: tuple[int, int] = (400, 300)
     FIXED_H_RESET_BTN: int = 40
-    NBRE_COL_BTN: int = 4
+    NBRE_COL_BTN: int = 5
     IMG_DIR_PATH: Path = BASE_DIR / "assets" / "img"
     # Strings :
     RESET_BUTTON: str = "Recentrer la carte sur l'Espagne"
