@@ -11,26 +11,14 @@ from typing import Optional, Union
 
 import sqlite3
 
+from vinos_ibericos.data import bodega_fields
+
 
 # Chemin par défaut du fichier de base de données (même répertoire que ce fichier) :
 DEFAULT_DB_PATH = Path(__file__).parent / "bodegas.db"
 
 # Schéma de la table bodegas (requête SQLite):
-CREATE_BODEGAS_TABLE_SQL = """
-CREATE TABLE IF NOT EXISTS bodegas (
-    id INTEGER PRIMARY KEY,
-    name TEXT NOT NULL,
-    cp INTEGER,
-    town TEXT NOT NULL,
-    street TEXT,
-    number INTEGER,
-    comp TEXT,
-    lat REAL NOT NULL,
-    lon REAL NOT NULL,
-    website TEXT,
-    do_name TEXT NOT NULL
-);
-"""
+CREATE_BODEGAS_TABLE_SQL = bodega_fields.generate_create_table_sql()
 
 
 class BodegaManager:
@@ -39,31 +27,24 @@ class BodegaManager:
         self.conn = init_db(db_path)
 
     def add_bodega(self, data: dict) -> Optional[int]:
-        """
-        Insère une bodegadans la base.
-        data: dictionnaire avec clés :
-          name, cp, town, street, number, comp, lat, lon, website, do_name
-        Retourne l'ID de la bodega insérée.
-        """
-        sql = """
-        INSERT INTO bodegas
-        (name, cp, town, street, number, comp, lat, lon, website, do_name)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """
-        # Préparer les valeurs dans le bon ordre :
-        values = (
-            data.get("name"),
-            data.get("cp"),
-            data.get("town"),
-            data.get("street"),
-            data.get("number"),
-            data.get("comp"),
-            data.get("lat"),
-            data.get("lon"),
-            data.get("website"),
-            data.get("do_name"),
-        )
-
+        """Insère une bodega dans la base."""
+        # Colonnes à insérer : toutes les clés du tuple FIELDS
+        columns = [field[0] for field in bodega_fields.FIELDS]
+        # Préparer les valeurs dans le bon ordre
+        values = []
+        for key, _, _, typ in bodega_fields.FIELDS:
+            val = data.get(key)
+            # Conversion de type automatique si nécessaire
+            if val is not None:
+                try:
+                    val = typ(val)
+                except ValueError:
+                    raise ValueError(
+                        f"Erreur de conversion pour le champ '{key}' avec la valeur '{val}'"
+                    )
+            values.append(val)
+        placeholders = ", ".join(["?"] * len(columns))
+        sql = f"INSERT INTO bodegas ({', '.join(columns)}) VALUES ({placeholders})"
         cur = self.conn.cursor()
         cur.execute(sql, values)
         self.conn.commit()

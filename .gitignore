@@ -6,3 +6,6 @@ __pycache__/
 
 # Environnements virtuels
 .venv/
+
+# Fichiers divers
+script_tester.py
