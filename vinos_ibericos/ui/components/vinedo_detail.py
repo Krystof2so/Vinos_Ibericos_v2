@@ -6,6 +6,7 @@ from PySide6.QtCore import Qt
 
 from vinos_ibericos.ui.config_ui import Colors, ConfigUI
 from vinos_ibericos.ui.styles.global_style import GlobalStyle
+from vinos_ibericos.ui.components.bodega_form import BodegaForm
 
 
 class VinedoDetailDialog(QtWidgets.QDialog):
@@ -46,6 +47,7 @@ class VinedoDetailDialog(QtWidgets.QDialog):
         btn_close.clicked.connect(self.close)
         # Bouton d'ajout de bodega :
         btn_add_bodega = QtWidgets.QPushButton("Ajouter une bodega")
+        btn_add_bodega.clicked.connect(self.open_bodega_form)
         # Ajout des 'QPushButton' :
         btns_layout.addWidget(btn_add_bodega, alignment=Qt.AlignLeft)  # type: ignore
         btns_layout.addWidget(btn_close, alignment=Qt.AlignRight)  # type: ignore
@@ -93,3 +95,8 @@ class VinedoDetailDialog(QtWidgets.QDialog):
             self.img_label.setPixmap(scaled)
         else:
             self.img_label.setText("Image introuvable")
+
+    def open_bodega_form(self):
+        dialog = BodegaForm(self)
+        dialog.setModal(True)  # bloque uniquement VinedoDetailDialog
+        dialog.show()  # pas exec(), donc pas de boucle imbriquée
