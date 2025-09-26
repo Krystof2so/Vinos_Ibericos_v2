@@ -74,7 +74,7 @@
   {
     "nom": "Arlanza",
     "coords": [42.02639, -3.75889],
-    "description": "La viticulture dans la région de l'Arlanza remonte au moins au XIIe siècle, lorsque le monastère de Santa María de Bujedo de Juarros acquit des vignobles situés le long des rivières Arlanza et Duero. La région a été officiellement reconnue comme Denominación de Origen Protegida (DOP) en 2007, consolidant ainsi son identité viticole.",
+    "description": "<p>La tradition viticole de la <a href=\"https://es.wikipedia.org/wiki/Comarca_del_Arlanza\">comarca d’Arlanza</a> remonte au X<sup>e</sup> siècle, lorsque les monastères cultivaient et valorisaient les vignes de la région. Pendant des siècles, ces vins ont fait partie intégrante de la vie rurale et du patrimoine local.</p>\n<p>Au début du XX<sup>e</sup> siècle, la phylloxéra obligea à replanter tout le vignoble. Puis, à partir des années 1950, l’exode rural et la difficulté à mécaniser les petites parcelles entraînèrent un déclin progressif, beaucoup de viticulteurs se tournant alors vers la culture des céréales.</p>\n<p>En 1995, un groupe d’amateurs passionnés initia la renaissance du vignoble sous l’appellation <em>Vino de la Tierra Ribera del Arlanza</em>. Leurs efforts aboutirent en 2007 à la reconnaissance officielle de la <a href=\"https://arlanza.org/\">Denominación de Origen Arlanza</a>, symbole de renouveau et de qualité.</p>\n<p>Aujourd’hui, les vins de l’<strong>Arlanza</strong> perpétuent mille ans d’histoire en offrant des saveurs authentiques, issues d’un terroir unique entre l’<a href=\"https://fr.wikipedia.org/wiki/Arlanz%C3%B3n_(rivi%C3%A8re)\">Arlanzón</a> et l’<a href=\"https://fr.wikipedia.org/wiki/Arlanza\">Arlanza.</a></p>",
     "img": "arlanza.jpg"
   },
   {
@@ -236,6 +236,36 @@
   {
     "nom": "Mondéjar",
     "coords": [40.3267, -3.1133],
+    "description": "",
+    "img": ""
+  },
+  {
+    "nom": "Montilla-\t\tMoriles",
+    "coords": [37.5864, -4.6386],
+    "description": "",
+    "img": ""
+  },
+  {
+    "nom": "Montsant",
+    "coords": [41.1458, 0.8219],
+    "description": "",
+    "img": ""
+  },
+  {
+    "nom": "Penedés",
+    "coords": [41.3450, 1.6975],
+    "description": "",
+    "img": ""
+  },
+  {
+    "nom": "Pla de\t\t\t\t Bages",
+    "coords": [41.7280, 1.8239],
+    "description": "",
+    "img": ""
+  },
+  {
+    "nom": "Ribeira\t\t\t Sacra",
+    "coords": [42.5186, -7.5142],
     "description": "",
     "img": ""
   }
