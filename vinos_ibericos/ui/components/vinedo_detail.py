@@ -18,7 +18,7 @@ class VinedoDetailDialog(QtWidgets.QDialog):
         self.img_dir = img_dir
 
         # Config fenêtre
-        self.setWindowTitle(vinedo.get("nom", ConfigUI.DEFAULT_TITLE))
+        self.setWindowTitle(vinedo.get("name", ConfigUI.DEFAULT_TITLE))
         self.setWindowFlags(Qt.Window | Qt.WindowStaysOnTopHint)  # type: ignore
         self.setFixedSize(*ConfigUI.DETAIL_WIN_SIZE)
 
@@ -97,6 +97,8 @@ class VinedoDetailDialog(QtWidgets.QDialog):
             self.img_label.setText("Image introuvable")
 
     def open_bodega_form(self):
-        dialog = BodegaForm(self)
+        dialog = BodegaForm(
+            self, do_name=self.vinedo.get("nom")
+        )  # passe la valeur au constructeur
         dialog.setModal(True)  # bloque uniquement VinedoDetailDialog
-        dialog.show()  # pas exec(), donc pas de boucle imbriquée
+        dialog.show()

@@ -19,9 +19,10 @@ FONT_SIZE = 16
 
 
 class BodegaForm(QDialog):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, do_name: str | None = None):
         super().__init__(parent)
         self.setWindowTitle("Ajouter une Bodega")
+        self.setFixedSize(500, 550)
 
         item_space = QSpacerItem(0, 10, QSizePolicy.Minimum, QSizePolicy.Fixed)  # type: ignore
         layout_form = QFormLayout(self)  # Définition des champs : label et clé
@@ -31,8 +32,12 @@ class BodegaForm(QDialog):
         for key, label, required, typ in FIELDS:
             widget = QLineEdit()
             widget.setStyleSheet(f"font-size: {FONT_SIZE}pt;")
-            label_widget = QLabel(f"{label}{' (*)' if required else ''}:")
+            label_widget = QLabel(f"{label}{' * ' if required else ''} : ")
             label_widget.setStyleSheet(f"font-size: {FONT_SIZE}pt;")
+            # Si c'est le champ "do_name", pré-remplir avec la valeur passée
+            if key == "do_name" and do_name:
+                widget.setText(do_name)
+                widget.setReadOnly(True)  # optionnel, pour empêcher la modification
             layout_form.addRow(label_widget, widget)
             self.inputs[key] = (widget, required, typ)
         # Séparateur
