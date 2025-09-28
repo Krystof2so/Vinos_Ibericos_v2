@@ -37,7 +37,7 @@ class BodegaForm(QDialog):
             # Si c'est le champ "do_name", pré-remplir avec la valeur passée
             if key == "do_name" and do_name:
                 widget.setText(do_name)
-                widget.setReadOnly(True)  # optionnel, pour empêcher la modification
+                widget.setReadOnly(True)  # Pour empêcher la modification
             layout_form.addRow(label_widget, widget)
             self.inputs[key] = (widget, required, typ)
         # Séparateur

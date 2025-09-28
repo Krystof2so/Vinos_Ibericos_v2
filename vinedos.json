@@ -42,7 +42,7 @@
     "img": "navarra.jpg"
   },
   {
-    "nom": "Vinos de\t\t Madrid",
+    "nom": "Vinos de Madrid",
     "coords": [40.4168, -3.7038],
     "description": "Il est confirmé que l'existence des premiers domaines viticoles dans les frontières actuelles de Madrid remonte au XIIIe siècle, mais l'existence de vigne et du vin dans la région remonte à bien plus longtemps.",
     "img": "vinos_de_madrid.jpg"
@@ -102,7 +102,7 @@
     "img": "granada.jpg"
   },
   {
-    "nom": "Campo de\t\t Borja",
+    "nom": "Campo de Borja",
     "coords": [41.8337231, -1.534179],
     "description": "Le DO Campo de Borja est officiellement reconnu depuis les années 1977-1980. La culture de la vigne dans cette zone remonte à l’époque romaine, mais la première mention écrite concernant des vignes dans cette région date de 1203, dans les archives du monastère cistercien de Veruela. Le cépage emblématique est la Garnacha (Grenache), qui domine largement les plantations (plus de 60 %) dans les zones les plus basses ; d’autres cépages rouges (Tempranillo, Mazuela / Carignan, Cabernet, Syrah) ainsi que des blancs (Macabeo, Chardonnay, etc.) sont également cultivés.",
     "img": "campo_de_borja.jpg"
@@ -192,7 +192,7 @@
     "img": ""
   },
   {
-    "nom": "Conca de\t\t Barberá",
+    "nom": "Conca de Barberá",
     "coords": [41.3761, 1.1640],
     "description": "",
     "img": ""
@@ -240,7 +240,7 @@
     "img": ""
   },
   {
-    "nom": "Montilla-\t\tMoriles",
+    "nom": "Montilla-Moriles",
     "coords": [37.5864, -4.6386],
     "description": "",
     "img": ""
@@ -258,13 +258,13 @@
     "img": ""
   },
   {
-    "nom": "Pla de\t\t\t\t Bages",
+    "nom": "Pla de Bages",
     "coords": [41.7280, 1.8239],
     "description": "",
     "img": ""
   },
   {
-    "nom": "Ribeira\t\t\t Sacra",
+    "nom": "Ribeira Sacra",
     "coords": [42.5186, -7.5142],
     "description": "",
     "img": ""

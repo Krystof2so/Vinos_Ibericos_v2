@@ -113,6 +113,51 @@ class GlobalStyle:
         """
 
     @staticmethod
+    def get_list_widget_style() -> str:
+        """Style pour la QListWidget des vignobles."""
+        return f"""
+        QListWidget {{
+            background-color: {Colors.BACKGROUND_DARK_2};
+            color: {Colors.BACKGROUND_LIGHT};
+            border: 1px solid {Colors.PRIMARY_ACCENT};  /* liséré */
+            border-radius: 8px;
+            font-size: 16pt;
+            font-family: {ConfigUI.FONT_FAMILY};
+        }}
+        QListWidget::item {{
+            padding: 6px 14px;
+            border-radius: 6px;
+        }}
+        QListWidget::item:selected {{
+            background-color: {Colors.PRIMARY_MAIN};
+            color: {Colors.BACKGROUND_LIGHT};
+            border: 1px solid {Colors.BORDER_COLOR};
+        }}
+        QListWidget::item:hover {{
+            background-color: {Colors.PRIMARY_ACCENT};
+            color: {Colors.BACKGROUND_LIGHT};
+        }}
+        QScrollBar:vertical {{
+            background: {Colors.TEXT_SECONDARY};
+            width: 8px;
+            margin: 0px;
+            border-radius: 6px;
+        }}
+        QScrollBar::handle:vertical {{
+            background: {Colors.PRIMARY_MAIN};
+            border-radius: 4px;
+        }}
+        QScrollBar::handle:hover {{
+            background: {Colors.PRIMARY_ACCENT};
+        }}
+        QScrollBar::add-line:vertical,
+        QScrollBar::sub-line:vertical {{
+            height: 0px;
+            background: none;
+        }}
+        """
+
+    @staticmethod
     def widget_border() -> str:
         return f"""
         QFrame {{

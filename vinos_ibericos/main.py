@@ -4,13 +4,13 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 import json
 
-from PySide6 import QtWidgets
+from PySide6 import QtCore, QtGui, QtWidgets
 from PySide6.QtWebEngineWidgets import QWebEngineView
 
 from vinos_ibericos.ui.styles.global_style import GlobalStyle
 from vinos_ibericos.map_manager import MapManager
-from vinos_ibericos.vinedo_button import VinedoButton
 from vinos_ibericos.ui.components.vinedo_detail import VinedoDetailDialog
+from vinos_ibericos.utils import suspend_signals
 
 
 @dataclass(frozen=True)
@@ -27,6 +27,7 @@ class Config:
     FIXED_H_RESET_BTN: int = 40
     NBRE_COL_BTN: int = 5
     IMG_DIR_PATH: Path = BASE_DIR / "assets" / "img"
+    DEFAULT_IMG: Path = BASE_DIR / "assets"
     # Strings :
     RESET_BUTTON: str = "Recentrer la carte sur l'Espagne"
     NOT_IMG: str = "Image introuvable"
@@ -44,24 +45,15 @@ class MainWindow(QtWidgets.QMainWindow):
         }
         self.map_manager: MapManager = MapManager(vinedos)
         self.detail_window: Optional[VinedoDetailDialog] = None
-
-        # Groupement des boutons (pour une logique "un seul coché à la fois") :
-        self.btn_group = QtWidgets.QButtonGroup(self)
-        self.btn_group.setExclusive(True)  # Un seul bouton coché dans le groupe
-        # Connexion au signal qui fournit le bouton cliqué :
-        self.btn_group.buttonClicked.connect(self.on_group_button_clicked)
-
         #  Widget central :
         central_widget = QtWidgets.QWidget()
         self.setCentralWidget(central_widget)
         main_layout = QtWidgets.QHBoxLayout(central_widget)
-
         # Partie carte :
         self.map_frame = self._setup_map_view()
         main_layout.addWidget(
             self.map_frame, stretch=Config.STRETCH_MAP_VIEW
         )  # plus large pour la carte
-
         # Partie panneau droit (ajout des boutons au groupe):
         right_frame = self._setup_right_panel(vinedos)
         main_layout.addWidget(right_frame, stretch=Config.STRETCH_RIGHT_PANEL)
@@ -78,46 +70,76 @@ class MainWindow(QtWidgets.QMainWindow):
         return frame
 
     def _setup_right_panel(self, vinedos: List[Dict[str, Any]]) -> QtWidgets.QFrame:
-        """Construit le panneau droit avec la grille des boutons et le reset."""
+        """Construit le panneau droit avec une QListWidget triée (scrollable) et le reset."""
         right_frame = QtWidgets.QFrame()
-        right_layout = QtWidgets.QVBoxLayout(right_frame)
-        # Grille pour les boutons :
-        grid_buttons_layout = QtWidgets.QGridLayout()
-        right_layout.addLayout(grid_buttons_layout)
+        grid = QtWidgets.QGridLayout(right_frame)
+        grid.setContentsMargins(5, 5, 5, 5)
+        grid.setSpacing(5)
+        # Label :
+        title_label = QtWidgets.QLabel("Choisir un vignoble\ndans la liste suivante :")
+        title_label.setStyleSheet("font-size: 18pt;")
+        title_label.setAlignment(QtCore.Qt.AlignCenter)  # type: ignore
+        grid.addWidget(title_label, 0, 1, 1, 2)
+        # Création de la QListWidget
+        self.list_widget = self._create_list_widget(vinedos)
+        grid.addWidget(self.list_widget, 1, 1, 4, 2)
+        # Label pour afficher une image :
+        self.image_label = QtWidgets.QLabel()
+        self.image_label.setAlignment(QtCore.Qt.AlignCenter)  # type: ignore
+        default_image_path = Config.DEFAULT_IMG / "copa_vino.jpg"
+        pixmap = QtGui.QPixmap(str(default_image_path))
+        self.image_label.setPixmap(
+            pixmap.scaled(
+                400,
+                300,  # taille fixe pour l'affichage initial
+                QtCore.Qt.KeepAspectRatio,  # type: ignore
+                QtCore.Qt.SmoothTransformation,  # type: ignore
+            )
+        )
+        grid.addWidget(self.image_label, 5, 1, 4, 2)
         # Bouton pour réinitialiser la carte :
         reset_btn = QtWidgets.QPushButton(Config.RESET_BUTTON)
         reset_btn.setFixedHeight(Config.FIXED_H_RESET_BTN)
         reset_btn.clicked.connect(self.reset_interface)
-        right_layout.addWidget(reset_btn)
-        # Création des boutons et ajout au 'QButtonGroup' (tri alphabétique) :
-        vinedos_sorted: list = sorted(vinedos, key=itemgetter("nom"))
-        for i, vinedo in enumerate(vinedos_sorted):
-            row: int = i // Config.NBRE_COL_BTN
-            col: int = i % Config.NBRE_COL_BTN
-            btn: QtWidgets.QPushButton = VinedoButton(
-                vinedo["nom"], str(Config.IMG_DIR_PATH / vinedo["img"])
-            )
-            self.btn_group.addButton(btn)  # Ajout du bouton au groupe
-            grid_buttons_layout.addWidget(btn, row, col)
+        grid.addWidget(reset_btn, 9, 0, 1, 4)
         return right_frame
 
-    def on_group_button_clicked(self, button: QtWidgets.QAbstractButton) -> None:
-        """
-        Slot connecté à 'QButtonGroup.buttonClicked'.
-        - 'button.isChecked()' permet de savoir si le bouton est maintenant coché ou non.
-        - Si décoché -> on considère la sélection annulée (on réinitialise la carte).
-        - Si coché   -> on centre la carte sur le vignoble sélectionné.
-        """
-        vbtn: VinedoButton = button  # type: ignore
-        if not vbtn.isChecked():  # Bouton décoché
+    def _create_list_widget(
+        self, vinedos: List[Dict[str, Any]]
+    ) -> QtWidgets.QListWidget:
+        """Construit la QListWidget des vignobles avec tri, stockage d'objet et style."""
+        list_widget = QtWidgets.QListWidget()
+        list_widget.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)  # type: ignore
+        list_widget.setStyleSheet(GlobalStyle.get_list_widget_style())
+        # Tri alphabétique et ajout des items
+        vinedos_sorted = sorted(vinedos, key=itemgetter("nom"))
+        for vinedo in vinedos_sorted:
+            item = QtWidgets.QListWidgetItem(vinedo["nom"])
+            item.setData(QtCore.Qt.UserRole, vinedo)  # type: ignore
+            list_widget.addItem(item)
+        # Limiter la taille visible à 10 lignes
+        num_visible = 8
+        if list_widget.count() > 0:
+            row_height = list_widget.sizeHintForRow(0)
+            frame_height = row_height * num_visible + 2 * list_widget.frameWidth()
+            list_widget.setFixedHeight(frame_height)
+        # Connexion du signal
+        list_widget.itemSelectionChanged.connect(self.on_list_item_selected)
+        return list_widget
+
+    def on_list_item_selected(self) -> None:
+        """Slot appelé quand la sélection dans la QListWidget change."""
+        current = self.list_widget.currentItem()
+        if current is None:  # Pas d'item sélectionné -> vue globale
             self._close_detail_window()
-            self.update_map()  # vue globale
+            self.update_map()
             return
+        # Récupère le dictionnaire associé au vignoble :
+        selected_vinedo = current.data(QtCore.Qt.UserRole)  # type: ignore
         self._close_detail_window()
-        selected_vinedo = next((v for v in self.vinedos if v["nom"] == vbtn.name), None)
-        if selected_vinedo:  # On affiche la fenêtre consacrée au vignoble
-            self._display_detail_window(selected_vinedo)
-        self.update_map(vinedo_filter=vbtn.name)
+        self._display_detail_window(selected_vinedo)
+        # Mettre à jour la carte en filtrant sur le vignoble sélectionné
+        self.update_map(vinedo_filter=selected_vinedo["nom"])
 
     def update_map(self, vinedo_filter: Optional[str] = None) -> None:
         """Regénère la carte avec tous les marqueurs, centrée sur 'center'"""
@@ -125,14 +147,17 @@ class MainWindow(QtWidgets.QMainWindow):
         self.map_view.setHtml(html_data)
 
     def reset_interface(self) -> None:
-        """Réinitialise la carte et le bouton sélectionné"""
-        self.update_map()  # Réinitialiser la carte
+        """
+        Réinitialise la carte et la sélection dans la QListWidget,
+        et retire le focus clavier pour éviter toute sélection involontaire.
+        """
         self._close_detail_window()
-        # récupère le bouton coché et le décoche (cela déclenchera toggled(False))
-        checked_btn = self.btn_group.checkedButton()
-        if checked_btn:
-            checked_btn.setChecked(False)
-            checked_btn.setStyleSheet(VinedoButton.DEFAULT_STYLE)
+        # Vider la sélection de la QListWidget et bloquer temporairement les signaux :
+        if hasattr(self, "list_widget") and self.list_widget is not None:
+            with suspend_signals(self.list_widget):
+                self.list_widget.clearSelection()
+            self.list_widget.clearFocus()  # Retirer le focus clavier
+        self.update_map()  # Réinitialiser la carte
 
     def _display_detail_window(self, vinedo: dict) -> None:
         """
