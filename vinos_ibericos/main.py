@@ -9,7 +9,7 @@ from PySide6.QtWebEngineWidgets import QWebEngineView
 from vinos_ibericos.ui.styles.global_style import GlobalStyle
 from vinos_ibericos.map_manager import MapManager
 from vinos_ibericos.ui.components.vinedo_detail import VinedoDetailDialog
-from vinos_ibericos.utils import suspend_signals, load_datas
+from vinos_ibericos.utils import CheckVinedoJson, suspend_signals
 from vinos_ibericos.datatypes import Vinedo
 
 
@@ -190,7 +190,11 @@ def main() -> None:
     app.setStyleSheet(
         GlobalStyle.get_base_style()
     )  # Application du style global à toute l'UI
-    main_win: MainWindow = MainWindow(load_datas())
+    loader_json_file: CheckVinedoJson = CheckVinedoJson()
+    loader_json_file.load()  # Charge et valide les données
+    main_win: MainWindow = MainWindow(
+        loader_json_file.data
+    )  # Accès direct aux données via 'data'
     main_win.showMaximized()  # Plein écran avec barre de titre
     app.exec()
 
