@@ -9,8 +9,10 @@ from PySide6.QtWebEngineWidgets import QWebEngineView
 from vinos_ibericos.ui.styles.global_style import GlobalStyle
 from vinos_ibericos.map_manager import MapManager
 from vinos_ibericos.ui.components.vinedo_detail import VinedoDetailDialog
-from vinos_ibericos.utils import CheckVinedoJson, suspend_signals
+from vinos_ibericos.utils import CheckVinedoJson, VinedoJsonError, suspend_signals
 from vinos_ibericos.datatypes import Vinedo
+from vinos_ibericos.config.strings import ErrorMsg
+from vinos_ibericos.ui.components.message_box import MainBox
 
 
 @dataclass(frozen=True)
@@ -191,7 +193,16 @@ def main() -> None:
         GlobalStyle.get_base_style()
     )  # Application du style global à toute l'UI
     loader_json_file: CheckVinedoJson = CheckVinedoJson()
-    loader_json_file.load()  # Charge et valide les données
+    try:
+        loader_json_file.load()  # Charge et valide les données
+    except VinedoJsonError:
+        msg_box = MainBox(
+            text=ErrorMsg.MSG_ERROR_JSON_VINEDO,
+            title=ErrorMsg.JSON_ERROR,
+            icon="critical",
+        )
+        msg_box.exec()
+        return  # Arrêt du lancement de l'application
     main_win: MainWindow = MainWindow(
         loader_json_file.data
     )  # Accès direct aux données via 'data'

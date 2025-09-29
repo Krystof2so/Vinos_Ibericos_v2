@@ -15,7 +15,7 @@ from PySide6.QtCore import QObject
 
 from vinos_ibericos.datatypes import Vinedo
 from vinos_ibericos.config.general import ConfigPath
-from vinos_ibericos.config.strings import ErrorMsg
+from vinos_ibericos.exceptions import VinedoJsonError
 
 
 class CheckVinedoJson:
@@ -29,21 +29,16 @@ class CheckVinedoJson:
         try:
             with open(self.file_path, encoding="utf-8") as f:
                 data = json.load(f)
-        except FileNotFoundError:
-            print(f"Fichier introuvable: {self.file_path}")
-            data = []
-        except json.JSONDecodeError as e:
-            print(f"Erreur JSON: {e}")
-            data = []
-        self._data = (
-            [item for item in data if self._is_vinedo(item)]
-            if isinstance(data, list)
-            else []
-        )
+            if not isinstance(data, list):
+                raise ValueError
+        except (FileNotFoundError, json.JSONDecodeError, ValueError):
+            raise VinedoJsonError()
+        # filtre les entrées invalides
+        self._data = [item for item in data if self._is_vinedo(item)]
 
     @property
     def data(self) -> list[Vinedo]:
-        """Retourne les données validées déjà chargées."""
+        """Retourne les données validées."""
         return self._data
 
     @staticmethod
@@ -73,17 +68,3 @@ def suspend_signals(widget: QObject):
         yield
     finally:
         widget.blockSignals(False)
-
-
-def load_datas() -> list[Vinedo]:
-    """Chargement des données depuis JSON"""
-    try:
-        with open(ConfigPath.JSON_FILE_PATH, encoding="utf-8") as f:
-            data = json.load(f)
-            if isinstance(data, list):
-                return data
-    except FileNotFoundError:
-        print(ErrorMsg.NOT_FOUND_FILE)
-    except json.JSONDecodeError as e:
-        print(ErrorMsg.JSON_DECODE_ERROR, e)
-    return []
