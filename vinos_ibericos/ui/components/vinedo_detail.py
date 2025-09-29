@@ -1,3 +1,4 @@
+from glob import glob
 from pathlib import Path
 from typing import Any, Dict, Optional
 
@@ -78,13 +79,15 @@ class VinedoDetailDialog(QtWidgets.QDialog):
         self.desc_label.setOpenExternalLinks(True)
 
     def _load_image(self) -> None:
-        img_path = self.vinedo.get("img", "")
-        candidate = Path(img_path)
+        img_name = self.vinedo.get("img", "")
+        candidate = Path(img_name)
         if not candidate.is_absolute():
-            candidate = self.img_dir / img_path
-        pixmap = QtGui.QPixmap(str(candidate))
-        if pixmap.isNull():
-            pixmap = QtGui.QPixmap(str(self.img_dir / "default_img.jpg"))
+            candidate = self.img_dir / img_name
+        # Recherche du fichier indépendamment de son extension :
+        matche_img = glob(str(candidate) + ".*")
+        pixmap = QtGui.QPixmap(
+            matche_img[0] if matche_img else self.img_dir / "default_img.jpg"
+        )
         if not pixmap.isNull():
             scaled = pixmap.scaled(
                 ConfigUI.DETAIL_IMG_SIZE[0],

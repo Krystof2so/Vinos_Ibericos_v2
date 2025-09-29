@@ -1,11 +1,12 @@
 from dataclasses import dataclass
 from json import load, JSONDecodeError
 from pathlib import Path
-from typing import Dict, Any, List, Optional, Tuple, TypedDict
+from typing import Dict, Any, List, Optional, Tuple
 
 import folium
 
 from vinos_ibericos.ui.config_ui import Colors
+from vinos_ibericos.datatypes import Vinedo
 
 
 @dataclass(frozen=True)
@@ -28,17 +29,10 @@ class PathConfig:
     GEOJSON_DIR: Path = Path(__file__).parent.parent / "assets" / "geojson"
 
 
-class Vinedo(TypedDict):
-    nom: str
-    coords: list[float]
-    description: str
-    img: str
-
-
 class MapManager:
-    def __init__(self, vinedos: list[dict[str, Any]]) -> None:
-        self.vinedos: list[dict[str, Any]] = vinedos
-        self._current_vinedos: list[dict[str, Any]] = []
+    def __init__(self, vinedos: list[Vinedo]) -> None:
+        self.vinedos: list[Vinedo] = vinedos
+        self._current_vinedos: list[Vinedo] = []
 
     def generate_map_html(self, vinedo_filter: Optional[str] = None) -> str:
         """
@@ -73,9 +67,7 @@ class MapManager:
             self._add_marker(fmap, vinedo, focus)
         return fmap.get_root().render()
 
-    def _add_marker(
-        self, fmap: folium.Map, vinedo: dict[str, Any], focus: bool
-    ) -> None:
+    def _add_marker(self, fmap: folium.Map, vinedo: Vinedo, focus: bool) -> None:
         """
         Ajoute un marqueur pour un vignoble donné.
         - focus=True => plus gros icône + popup

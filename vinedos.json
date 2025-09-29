@@ -3,127 +3,127 @@
     "nom": "Somontano",
     "coords": [42.03611, 0.12639],
     "description": "<p>Le vignoble du <strong>Somontano</strong>, au pied des Pyrénées dans la <a href=\"https://fr.wikipedia.org/wiki/Province_de_Huesca\">province de Huesca</a>, s’étend sur 4 000 hectares et combine plaines et montagnes pour produire des vins de grande qualité. Avec 27 caves, 15 cépages et plus de 268 vins, cette région allie tradition et innovation.</p>\n<p>La viticulture y remonte à l’Antiquité, renforcée par l’influence des <a href=\"https://fr.wikipedia.org/wiki/Italiques\">Italiques</a> et, au Moyen Âge, par les monastères locaux. Aux XIXe et XXe siècles, l’introduction de cépages comme <strong>Chardonnay</strong>, <strong>Merlot</strong> et <strong>Cabernet-Sauvignon</strong> et la création de la <em>Cooperativa Comarcal Somontano del Sobrarbe</em> ont consolidé la réputation du vignoble, jusqu’à la reconnaissance officielle de la <a href=\"https://dosomontano.com/\">Denominación de Origen Somontano</a> en 1984.</p>\n<p>Aujourd’hui, le <em>Somontano</em> est synonyme de caractère, excellence et passion, faisant de cette région un acteur majeur de la viticulture espagnole.</p>",
-    "img": "somontano.jpg"
+    "img": "somontano"
   },
   {
     "nom": "Jumilla",
     "coords": [38.4760, -1.3220],
     "description": "La région dans laquelle s'établit la DOP Jumilla constitue un territoire de transition entre la plaine de la Mancha et les doux terroirs méditerranéens du Levante.",
-    "img": "jumilla.jpg"
+    "img": "jumilla"
   },
   {
     "nom": "Ribera del Duero",
     "coords": [41.6971, -3.9280],
     "description": "Son vignoble, dans la zone du Haute Vallée du Douro, Duero en espagnol, regroupe de nombreuses communes des provinces de Burgos, Valladolid, Soria et Ségovie avec une longue tradition de production de vins",
-    "img": "ribera_del_duero.jpg"
+    "img": "ribera_del_duero"
   },
   {
     "nom": "Cariñena",
     "coords": [41.333, -1.217],
     "description": "C'est l'AOC doyenne de la communauté autonome d'Aragon, et l'une des plus anciennes d'Espagne.",
-    "img": "carinena.jpg"
+    "img": "carinena"
   },
   {
     "nom": "Alella",
     "coords": [41.495, 2.296],
     "description": "<p><a href=\"https://doalella.com/es/\">Alella</a>, petite appellation d'origine (DO) de Catalogne, se situe au nord de Barcelone, entre la mer Méditerranée et les collines des Parcs de <a href=\"https://fr.wikipedia.org/wiki/Parc_de_la_Cordillera_Litoral\">la Serralada Litoral</a> et de <a href=\"https://fr.wikipedia.org/wiki/Parc_de_la_Sierra_de_la_Marina\">la Serra de Marina</a>. Les sols granitiques, appelés <em>sauló</em>, et le microclimat combinant influences méditerranéennes et continentales, offrent des conditions idéales pour la vigne.</p>\n<p>La viticulture repose sur le travail manuel des familles locales. Les vins blancs, emblématiques de la région, sont élaborés principalement à partir de <strong>Pansa Blanca</strong> (<em>Xarel lo</em>) et <strong>Garnatxa Blanca</strong>, tandis que les vins rouges privilégient le <strong>Garnatxa Negra</strong> et le <strong>Mataró</strong>. D'autres cépages autorisés complètent la palette.</p>\n<p>Les vins d'<strong>Alella</strong>, fins et aromatiques, reflètent le terroir méditerranéen et la tradition locale, offrant qualité et caractère dans chaque bouteille.</p>",
-    "img": "alella.jpg"
+    "img": "alella"
   },
   {
     "nom": "Rias Baixas",
     "coords": [42.4336191, -8.6480530],
     "description": "Dans cette région d'Espagne cohabitent les deux types de viticulture. Elles sont pourtant diversifiées dans l'espace. Les vignobles aux ceps taillés courts se trouvent uniquement à l'intérieur des terres tandis que les vignes menées en hautain se situent le long des côtes. Ce mode de conduite est appelé parrales.",
-    "img": "rias_baixas.jpg"
+    "img": "rias_baixas"
   },
   {
     "nom": "Navarra",
     "coords": [42.4806, -1.6511],
     "description": "Sa zone de production se situe dans le sud de la Navarre.",
-    "img": "navarra.jpg"
+    "img": "navarra"
   },
   {
     "nom": "Vinos de Madrid",
     "coords": [40.4168, -3.7038],
     "description": "Il est confirmé que l'existence des premiers domaines viticoles dans les frontières actuelles de Madrid remonte au XIIIe siècle, mais l'existence de vigne et du vin dans la région remonte à bien plus longtemps.",
-    "img": "vinos_de_madrid.jpg"
+    "img": "vinos_de_madrid"
   },
   {
     "nom": "Condado de Huelva",
     "coords": [37.38605, -6.55231],
     "description": "Le début de la viticulture dans cette zone remonte au XIVe siècle, bien que des légendes lui prêtent une existence beaucoup plus ancienne, par un commerce entre Grecs et la civilisation de Tartessos. Le vignoble actuel remonte donc aux plantations effectuées après la reconquête de cette région sur les royaumes musulmans.",
-    "img": "condado_de_huelva.jpeg"
+    "img": "condado_de_huelvag"
   },
   {
     "nom": "Calatayud",
     "coords": [41.35353, -1.64318],
     "description": "La première référence écrite sur les vins de Calatayud date du Ier siècle.",
-    "img": "calatayud.jpg"
+    "img": "calatayud"
   },
   {
     "nom": "Catalunya",
     "coords": [41.1560, 1.1064],
     "description": "La DO Catalunya (Denominació d'Origen Protegida Catalunya) a été créée en 1999 pour couvrir l’ensemble des zones viticoles traditionnelles de la Catalogne, y compris les vignobles qui n’étaient pas inclus dans d’autres DO plus spécifiques. Elle offre une grande flexibilité : tous les cépages autorisés dans les autres DO catalanes peuvent être utilisés, ce qui permet beaucoup d’expérimentation pour les viticulteurs. Elle couvre une superficie importante : plus de 42 900 hectares de vignobles, répartis dans plusieurs centaines de communes catalanes.",
-    "img": "catalunya.jpg"
+    "img": "catalunya"
   },
   {
     "nom": "Almansa",
     "coords": [38.9384, -1.8613],
     "description": "<p>Située à l’est de la <a href=\"https://fr.wikipedia.org/wiki/Castille-La_Manche\">Castille-La Manche</a>, la <a href=\"https://denominacion-origen-almansa.com/\">DO Almansa</a> s’élève entre 700 et 1 100 mètres d’altitude. La viticulture y est attestée depuis le XVI<sup>e</sup> siècle et l’appellation a été officiellement créée en 1966, grâce notamment à l’impulsion de l’œnologue <strong>Mario Bonete</strong>, figure clé de sa reconnaissance.</p>\n<p>Aujourd’hui, la DO regroupe 11 bodegas réparties sur 8 communes de la <a href=\"https://fr.wikipedia.org/wiki/Province_d%27Albacete\">province d’Albacete</a>, avec une production annuelle avoisinant 6,5 millions de bouteilles. Elle s’illustre par la qualité de ses vins embouteillés, qui ont marqué un tournant décisif dans l’histoire viticole de la région.</p>",
-    "img": "almansa.jpg"
+    "img": "almansa"
   },
   {
     "nom": "Arlanza",
     "coords": [42.02639, -3.75889],
     "description": "<p>La tradition viticole de la <a href=\"https://es.wikipedia.org/wiki/Comarca_del_Arlanza\">comarca d’Arlanza</a> remonte au X<sup>e</sup> siècle, lorsque les monastères cultivaient et valorisaient les vignes de la région. Pendant des siècles, ces vins ont fait partie intégrante de la vie rurale et du patrimoine local.</p>\n<p>Au début du XX<sup>e</sup> siècle, la phylloxéra obligea à replanter tout le vignoble. Puis, à partir des années 1950, l’exode rural et la difficulté à mécaniser les petites parcelles entraînèrent un déclin progressif, beaucoup de viticulteurs se tournant alors vers la culture des céréales.</p>\n<p>En 1995, un groupe d’amateurs passionnés initia la renaissance du vignoble sous l’appellation <em>Vino de la Tierra Ribera del Arlanza</em>. Leurs efforts aboutirent en 2007 à la reconnaissance officielle de la <a href=\"https://arlanza.org/\">Denominación de Origen Arlanza</a>, symbole de renouveau et de qualité.</p>\n<p>Aujourd’hui, les vins de l’<strong>Arlanza</strong> perpétuent mille ans d’histoire en offrant des saveurs authentiques, issues d’un terroir unique entre l’<a href=\"https://fr.wikipedia.org/wiki/Arlanz%C3%B3n_(rivi%C3%A8re)\">Arlanzón</a> et l’<a href=\"https://fr.wikipedia.org/wiki/Arlanza\">Arlanza.</a></p>",
-    "img": "arlanza.jpg"
+    "img": "arlanza"
   },
   {
     "nom": "Empordà",
     "coords": [42.2676, 2.9580],
     "description": "La tradition viticole dans la région de l’Empordà remonte à plus de deux millénaires, avec des preuves de culture de la vigne datant de l’époque romaine. L’Empordà a obtenu le statut de Denominació d’Origen Protegida (DOP) en 1972. Aujourd’hui, la région est réputée pour ses vins expressifs, élaborés à partir de cépages traditionnels tels que la Garnatxa et la Carinyena, ainsi que pour ses pratiques viticoles durables.",
-    "img": "emporda.jpg"
+    "img": "emporda"
   },
   {
     "nom": "Ribera del Guadiana",
     "coords": [38.9411, -6.3706],
     "description": "La tradition viticole dans la région remonte à l'époque romaine, avec une continuité jusqu'à nos jours. Cependant, jusqu'à la fin du XXe siècle, la viticulture en Estrémadure était principalement orientée vers la production de raisins de table et de vin destiné à la distillation. Ce n'est qu'à partir de 1999 que la région a été officiellement reconnue pour la qualité de ses vins. Aujourd'hui, la Ribera del Guadiana est l'une des principales zones viticoles d'Espagne, produisant une large gamme de vins rouges, blancs et rosés, ainsi que des cavas.",
-    "img": "ribera_del_guadiana.jpg"
+    "img": "ribera_del_guadiana"
   },
   {
     "nom": "Monterrei",
     "coords": [41.9633, -7.4492],
     "description": "La viticulture dans la région de Monterrei remonte à plus de 2 000 ans, avec des traces de culture de la vigne datant de l'époque romaine. Au IXe siècle, les ordres monastiques ont joué un rôle clé dans l'expansion de la viticulture en Galice, notamment dans la vallée de Monterrei. Au Moyen Âge, les vins de Monterrei étaient réputés pour leur qualité et étaient exportés vers les colonies espagnoles en Amérique, notamment sous le règne de Philippe II. Aujourd'hui, la région produit principalement des vins blancs à partir des cépages Godello, Doña Blanca et Treixadura, ainsi que des rouges à base de Mencía et Merenzao. Les vignobles sont situés à des altitudes variant entre 400 et 450 mètres, bénéficiant d'un climat relativement sec et chaud, avec des influences atlantiques atténuées par la chaîne montagneuse de la Serra do Larouco",
-    "img": "monterrei.jpg"
+    "img": "monterrei"
   },
   {
     "nom": "Granada",
     "coords": [37.177336, -3.598557],
     "description": "La DO Granada, officialisée en 2015, regroupe plusieurs zones viticoles qui jusque-là étaient classées comme « Vino de la Tierra ». Le terroir est très varié : altitude, proximité des montagnes de la Sierra Nevada, influence méditerranéenne et microclimats locaux. Ces conditions contribuent à des vins avec des contrastes thermiques importants jour/nuit, ce qui favorise la complexité aromatique. Historiquement, la viticulture ici remonte à l’époque romaine dans la province, et s’est perpétuée malgré les périodes où les réglementations religieuses limitaient la production.",
-    "img": "granada.jpg"
+    "img": "granada"
   },
   {
     "nom": "Campo de Borja",
     "coords": [41.8337231, -1.534179],
     "description": "Le DO Campo de Borja est officiellement reconnu depuis les années 1977-1980. La culture de la vigne dans cette zone remonte à l’époque romaine, mais la première mention écrite concernant des vignes dans cette région date de 1203, dans les archives du monastère cistercien de Veruela. Le cépage emblématique est la Garnacha (Grenache), qui domine largement les plantations (plus de 60 %) dans les zones les plus basses ; d’autres cépages rouges (Tempranillo, Mazuela / Carignan, Cabernet, Syrah) ainsi que des blancs (Macabeo, Chardonnay, etc.) sont également cultivés.",
-    "img": "campo_de_borja.jpg"
+    "img": "campo_de_borja"
   },
   {
     "nom": "La Mancha",
     "coords": [39.3901, -3.2083],
     "description": "La Mancha est une Dénomination d’Origine Protégée (DOP) créée en 1932. La viticulture y remonte à l’époque romaine selon les sources, mais les premiers documents écrits attestés datent du XIIᵉ siècle, après la Reconquête. La région a connu une expansion significative dans les années 1940 grâce à la création de nombreuses coopératives. Terroir : climat continental (été très chaud, hiver froid), pluviométrie faible (~300-400 mm/an), sols essentiellement argilo-sablo-calcaires avec tendance plate à faiblement ondulée, altitude autour de ~600-700 mètres.",
-    "img": "la_mancha.jpg"
+    "img": "la_mancha"
   },
   {
     "nom": "Arribes",
     "coords": [41.3187, -6.3979],
     "description": "La D.O. Arribes a été officiellement reconnue en 2007. Elle se situe sur les bordures du fleuve Duero (Duero en espagnol, Douro en portugais), sur la frontière ouest de l'Espagne avec le Portugal, dans les provinces de Zamora et Salamanca en Castille-et-León. Le paysage est très accidenté : vignobles en terrasses sur des pentes escarpées le long des canyons du Duero, avec des sols granitiques, une topographie qui favorise un microclimat particulier. Les cépages autochtones comme Juan García (rouge), Rufete, les blancs Malvasía, Albillo, etc., jouent un rôle important.",
-    "img": "arribes.jpg"
+    "img": "arribes"
   },
   {
     "nom": "Alicante",
     "coords": [38.34517, -0.48149],
     "description": "<p>La vigne est présente en <a href=\"https://fr.wikipedia.org/wiki/Province_d%27Alicante\">Alicante</a> depuis l’époque ibère et fut développée par les Phéniciens puis les Romains, comme en témoignent amphores et <em>villae</em> découvertes dans la région. Au Moyen Âge, poètes arabes et premiers documents du <em>Repartiment</em> évoquent déjà ces vins, dont l’histoire écrite s’affirme dès le XVe siècle.</p>\n<p>À Benimaqua (<a href=\"https://fr.wikipedia.org/wiki/D%C3%A9nia\">Dénia</a>) se trouve l’un des plus anciens pressoirs d’Europe, signe de la vocation exportatrice des vins d’<strongAlicante</strong>. Dès le XVIe siècle, des privilèges royaux protègent leur production face à la concurrence. Leur réputation traverse les frontières, jusqu’en Angleterre, en Flandre et en Écosse. Des témoignages littéraires et historiques célèbrent ce vin, dégusté par rois, cardinaux et écrivains comme Dumas ou Dostoyevski.</p>\n<p>Aux XVIIe et XVIIIe siècles, la production prospère mais reste sous monopole du port d’<strong>Alicante</strong>. Le XIXe siècle marque un âge d’or, avec 93 000 ha de vignes et plus d’1,2 million d’hectolitres produits, stimulés par le commerce avec la France. C’est aussi le siècle du <em>Fondillón</em>, vin doux et puissant à base de <strong>Monastrell</strong>, parmi les plus prestigieux d’Europe.</p>\n<p>Le XXe siècle voit un recul dû à la mutation économique vers le tourisme et l’industrie. Toutefois, la création de la <a href=\"https://vinosalicantedop.org/\">Denominación de Origen Alicante</a> (1932) et de son Conseil Régulateur (1957) relancent la viticulture. Dans les années 1990, de nouvelles caves innovantes redonnent éclat et reconnaissance aux vins d’<strong>Alicante</strong>, qui vivent aujourd’hui une pleine maturité.</p>",
-    "img": "alicante.jpg"
+    "img": "alicante"
   },
   {
     "nom": "Bierzo",

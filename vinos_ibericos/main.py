@@ -1,8 +1,7 @@
 from dataclasses import dataclass
 from operator import itemgetter
 from pathlib import Path
-from typing import Any, Dict, List, Optional
-import json
+from typing import List, Optional
 
 from PySide6 import QtCore, QtGui, QtWidgets
 from PySide6.QtWebEngineWidgets import QWebEngineView
@@ -10,7 +9,8 @@ from PySide6.QtWebEngineWidgets import QWebEngineView
 from vinos_ibericos.ui.styles.global_style import GlobalStyle
 from vinos_ibericos.map_manager import MapManager
 from vinos_ibericos.ui.components.vinedo_detail import VinedoDetailDialog
-from vinos_ibericos.utils import suspend_signals
+from vinos_ibericos.utils import suspend_signals, load_datas
+from vinos_ibericos.datatypes import Vinedo
 
 
 @dataclass(frozen=True)
@@ -36,10 +36,10 @@ class Config:
 class MainWindow(QtWidgets.QMainWindow):
     """Construction de l'interface."""
 
-    def __init__(self, vinedos: List[Dict[str, Any]]) -> None:
+    def __init__(self, vinedos: List[Vinedo]) -> None:
         super().__init__()
         self.setWindowTitle("Vinos Ibericos")
-        self.vinedos: list[Dict[str, Any]] = vinedos
+        self.vinedos: list[Vinedo] = vinedos
         self.marker_coords: dict[str, list[float]] = {
             v["nom"]: v["coords"] for v in vinedos
         }
@@ -69,7 +69,7 @@ class MainWindow(QtWidgets.QMainWindow):
         frame.setStyleSheet(GlobalStyle.widget_border())
         return frame
 
-    def _setup_right_panel(self, vinedos: List[Dict[str, Any]]) -> QtWidgets.QFrame:
+    def _setup_right_panel(self, vinedos: List[Vinedo]) -> QtWidgets.QFrame:
         """Construit le panneau droit avec une QListWidget triée (scrollable) et le reset."""
         right_frame = QtWidgets.QFrame()
         grid = QtWidgets.QGridLayout(right_frame)
@@ -104,9 +104,7 @@ class MainWindow(QtWidgets.QMainWindow):
         grid.addWidget(reset_btn, 9, 0, 1, 4)
         return right_frame
 
-    def _create_list_widget(
-        self, vinedos: List[Dict[str, Any]]
-    ) -> QtWidgets.QListWidget:
+    def _create_list_widget(self, vinedos: List[Vinedo]) -> QtWidgets.QListWidget:
         """Construit la QListWidget des vignobles avec tri, stockage d'objet et style."""
         list_widget = QtWidgets.QListWidget()
         list_widget.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)  # type: ignore
@@ -185,23 +183,6 @@ class MainWindow(QtWidgets.QMainWindow):
         if self.detail_window:
             self.detail_window.close()
             self.detail_window = None
-
-
-# --- Fonctions utilitaires ---
-def load_datas() -> list[dict[str, Any]]:
-    """Chargement des données depuis JSON"""
-    try:
-        with open(Config.JSON_FILE_PATH, encoding="utf-8") as f:
-            data = json.load(f)
-            if isinstance(data, list):
-                return data
-            return []
-    except FileNotFoundError:
-        print(Config.NOT_FOUND_ERROR)
-        return []
-    except json.JSONDecodeError as e:
-        print(Config.JSON_DECODE_ERROR, e)
-        return []
 
 
 def main() -> None:
